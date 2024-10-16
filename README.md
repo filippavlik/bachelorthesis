@@ -40,7 +40,7 @@ materials_used_by_pfs/List_matches.xls) -_totally formatted_
   - [ ] **connecting similar matches, these whose follow-up
   some other match**   
   _algorithmically, we can adjust the criteria when they are similar_
-  - [ ]  **loading excuses, vetoes for the next weekend**   
+  - [ ]  **loading excuses,vehicle availability,place of embarkation for the game day, vetoes for the next weekend**   
   _excel document parsing, in the case of implementation by a web app it can be done without the need for mail, directly referees enter the data to database via the web app_ 
   - [ ] **dividing referees by level, displaying all the informations together , visually , it means displaying when the referee is time free throughout game days , so he is not excused or he does not have a match in the moment, displaying actuall informations about the amount of matches refereed for the team , which teams he cannot referee , because of the team veto, or personal reasons**  
 _main part ,all visual, make simpler for the administrators whose delegate, can be divided into smaller steps_
