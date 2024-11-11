@@ -64,8 +64,9 @@ The purpose of use is deployment in real proccess of administration, potentially
 ## Roadmap
 - [x] come up with a theme
 - [x] finding a supervisor on the Czech side - Mr Ing. Miroslav Balík, Ph.D.
-- [ ] analysis of possible technological solutions
-- [ ] finding a supervisor on the Slovenian side
+- [x] analysis of possible technological solutions
+- [x] finding a supervisor on the Slovenian side
+- [x] some basic milestones
 
 ## Project status
 _analysis_
