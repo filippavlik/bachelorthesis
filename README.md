@@ -65,7 +65,7 @@ The purpose of use is deployment in real proccess of administration, potentially
 - [x] come up with a theme
 - [x] finding a supervisor on the Czech side - Mr Ing. Miroslav Balík, Ph.D.
 - [x] analysis of possible technological solutions
-- [x] finding a supervisor on the Slovenian side
+- [x] finding a supervisor on the Slovenian side - Mr asist. dr. Sandi Gec
 - [x] some basic milestones
 
 ## Project status
