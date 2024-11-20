@@ -31,7 +31,8 @@
 
 
 
-- Planned features and status 
+- Planned features and status -https://lucid.app/lucidchart/26de1232-7aa1-4b02-b15e-1abc889a57ff/edit?invitationId=inv_24539d79-aa84-4e0f-86af-0fca5d8d9971
+
   - [ ] **automatic filling the database table , where is the information about which referee is on which competition level**   
   _excel parsing_
   - [ ] **automatic filling the database table, where are the records of how many times was referee delegated on the specific team (we distinguish home and away matches)**     
