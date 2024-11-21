@@ -10,11 +10,11 @@
   The people whose delegate are using various excel tables , whose are: 
 
   1. **List of referees and their levels**. It determines which referee is at which level, which competition he referees primarily.  
-  [Nomination_paper](materials_used_by_pfs/Nomination_paper.xlsx) -_partially formatted_- 
+  [Nomination_paper](Materials_used_by_pfs/Nomination_paper.xlsx) -_partially formatted_- 
   2. **Table of reported excuses on given game days/part of the days** .     Individual referees send every week eventual excuses to the association mail, those excuses from mails are manually overwritten to this file.In this file are also included informations about residence of referees and veto from clubs.  
-  [Excuses](materials_used_by_pfs/Excuses.xlsx) -_totally unformatted_
+  [Excuses](Materials_used_by_pfs/Excuses.xlsx) -_totally unformatted_
   3. **List of matches for future week**. This file is every week downloaded from registrace.fotbal.cz site, the privileged access must be assigned.  
-  [List_matches](materials_used_by_pfs/List_matches.xls) -_totally formatted_ 
+  [List_matches](Materials_used_by_pfs/List_matches.xls) -_totally formatted_ 
   4. **Document r/team home/team away**. Where is recorded how many times the person has refereed to the given team at home and away.  
   _the state unknown_
 
