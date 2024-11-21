@@ -31,7 +31,7 @@
 
 
 
-- Planned features and status -https://lucid.app/lucidchart/26de1232-7aa1-4b02-b15e-1abc889a57ff/edit?invitationId=inv_24539d79-aa84-4e0f-86af-0fca5d8d9971
+- Planned features and status - 
 
   - [ ] **automatic filling the database table , where is the information about which referee is on which competition level**   
   _excel parsing_
@@ -67,6 +67,8 @@ The purpose of use is deployment in real proccess of administration, potentially
 - [x] analysis of possible technological solutions
 - [x] finding a supervisor on the Slovenian side - Mr asist. dr. Sandi Gec
 - [x] some basic milestones
+- [x] [Database structure
+ ](https://www.fotbalpraha.cz/https://lucid.app/lucidchart/26de1232-7aa1-4b02-b15e-1abc889a57ff/edit?invitationId=inv_24539d79-aa84-4e0f-86af-0fca5d8d9971)
 
 ## Project status
 _analysis_
