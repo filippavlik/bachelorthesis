@@ -1,0 +1,43 @@
+version: '3.8'
+
+networks:
+  login-network:
+    external: true
+
+services:
+  login-application-container:
+    container_name: login-application-container
+    image: loginpart
+    environment:
+      - POSTGRES_DB=mydb
+    networks:
+      login-network:
+        ipv4_address: 172.18.0.2  # Static IP within the subnet
+    secrets:
+      - AzureClientId
+      - AzureClientSecret
+      - AzureTenantId
+      - AzureVaultURI
+      - JwtAudience
+      - JwtIssuer
+      - RedirectAdmin 
+      - RedirectReferee
+
+secrets:
+  AzureClientId:
+    file: ./secrets/AzureClientId
+  AzureClientSecret:
+    file: ./secrets/AzureClientSecret
+  AzureTenantId:
+    file: ./secrets/AzureTenantId
+  AzureVaultURI:
+    file: ./secrets/AzureVaultURI
+  JwtAudience:
+    file: ./secrets/JwtAudience
+  JwtIssuer:
+    file: ./secrets/JwtIssuer
+  RedirectAdmin:
+    file: ./secrets/RedirectAdmin
+  RedirectReferee:
+    file: ./secrets/RedirectReferee
+
