@@ -1,0 +1,20 @@
+#informations about app setup
+LoginPart/appsettings.*
+#the exe files
+LoginPart/bin
+#imports
+LoginPart/LoginPart.*
+#environment variables 
+LoginPart/.env
+#obj files
+LoginPart/obj
+#setup
+LoginPart.sln
+LoginPart/Properties
+LoginPart/Properties/*
+LoginPart/publish
+LoginPart/publish/*
+#secrets to access AzureKeyVault
+LoginPart/secrets
+LoginPart/secrets/*
+.dockerignore
