@@ -1,0 +1,109 @@
+﻿<!-- ConfirmEmail.cshtml -->
+@{
+    ViewData["Title"] = "Potvrzení registrace";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-success text-white text-center py-4">
+                    <h2 class="mb-0"><i class="fas fa-user-check me-2"></i>@ViewData["Title"]</h2>
+                </div>
+                <div class="card-body p-5 text-center">
+                    <div class="mb-4">
+                        <div class="success-animation">
+                            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="mb-3">Registrace dokončena!</h3>
+                    <p class="lead mb-2">
+                        Vaše e-mailová adresa byla úspěšně ověřena.
+                    </p>
+                    <p class="mb-4">
+                        Váš účet je nyní aktivní a můžete se přihlásit do aplikace.
+                    </p>
+                    <div class="d-grid gap-2">
+                        <a asp-action="Login" asp-controller="Account" class="btn btn-success btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Přihlásit se
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: all 0.3s;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+    .btn-success {
+        transition: all 0.3s;
+    }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+        }
+
+    /* Animated SVG checkmark */
+    .success-animation {
+        margin: 0 auto;
+        width: 100px;
+        height: 100px;
+    }
+
+    .checkmark {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: block;
+        stroke-width: 2;
+        stroke: #4BB543;
+        stroke-miterlimit: 10;
+        box-shadow: inset 0px 0px 0px #4BB543;
+        animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    }
+
+    .checkmark__circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+        stroke: #4BB543;
+        fill: none;
+        animation: stroke .6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+
+    .checkmark__check {
+        transform-origin: 50% 50%;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke .3s cubic-bezier(0.65, 0, 0.45, 1) .8s forwards;
+    }
+</style>
+
+<script>
+    // Add FontAwesome if not already included in your layout
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!document.querySelector('link[href*="fontawesome"]')) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+            document.head.appendChild(link);
+        }
+    });
+</script>

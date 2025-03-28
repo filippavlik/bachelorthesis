@@ -1,0 +1,46 @@
+﻿@model LoginPart.ViewModels.RedirectViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirecting...</title>
+</head>
+<body>
+    <h3>Redirecting to application...</h3>
+    <p>Please wait, you will be redirected shortly.</p>
+
+    <script>
+        // Store token in localStorage for later use
+        localStorage.setItem('jwt_token', '@Model.Token');
+
+        // Create a form for POST redirect with token
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '@Model.RedirectUrl';
+        form.style.display = 'none';
+
+        // Add token to form
+        var tokenInput = document.createElement('input');
+        tokenInput.type = 'hidden';
+        tokenInput.name = 'token';
+        tokenInput.value = '@Model.Token';
+        form.appendChild(tokenInput);
+
+        // Add CSRF token if needed
+        @if (Html.AntiForgeryToken() != null)
+        {
+            <text>
+                var antiForgeryInput = document.createElement('input');
+                antiForgeryInput.type = 'hidden';
+                antiForgeryInput.name = '__RequestVerificationToken';
+                antiForgeryInput.value = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                form.appendChild(antiForgeryInput);
+            </text>
+        }
+
+        // Submit the form
+        document.body.appendChild(form);
+        form.submit();
+    </script>
+</body>
+</html>
