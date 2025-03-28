@@ -69,6 +69,8 @@ The purpose of use is deployment in real proccess of administration, potentially
 - [x] some basic milestones
 - [x] [Database structure
  ](https://lucid.app/lucidchart/26de1232-7aa1-4b02-b15e-1abc889a57ff/edit?invitationId=inv_24539d79-aa84-4e0f-86af-0fca5d8d9971)
+- [x] working login/referee side
+- [x] code on gitlab
 
 ## Project status
 _implementation_
