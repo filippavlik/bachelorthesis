@@ -33,20 +33,20 @@
 
 - Planned features and status - 
 
-  - [ ] **automatic filling the database table , where is the information about which referee is on which competition level**   
+  - [x] **automatic filling the database table , where is the information about which referee is on which competition level**   
   _excel parsing_
-  - [ ] **automatic filling the database table, where are the records of how many times was referee delegated on the specific team (we distinguish home and away matches)**     
+  - [x] **automatic filling the database table, where are the records of how many times was referee delegated on the specific team (we distinguish home and away matches)**     
   _by api or document parsing_
-  - [ ] **connecting similar matches, these whose follow-up
+  - [x] **connecting similar matches, these whose follow-up
   some other match**   
   _algorithmically, we can adjust the criteria when they are similar_
-  - [ ]  **loading excuses,vehicle availability,place of embarkation for the game day, vetoes for the next weekend**   
+  - [x]  **loading excuses,vehicle availability,place of embarkation for the game day, vetoes for the next weekend**   
   _excel document parsing, in the case of implementation by a web app it can be done without the need for mail, directly referees enter the data to database via the web app_ 
-  - [ ] **dividing referees by level, displaying all the informations together , visually , it means displaying when the referee is time free throughout game days , so he is not excused or he does not have a match in the moment, displaying actuall informations about the amount of matches refereed for the team , which teams he cannot referee , because of the team veto, or personal reasons**  
+  - [x] **dividing referees by level, displaying all the informations together , visually , it means displaying when the referee is time free throughout game days , so he is not excused or he does not have a match in the moment, displaying actuall informations about the amount of matches refereed for the team , which teams he cannot referee , because of the team veto, or personal reasons**  
 _main part ,all visual, make simpler for the administrators whose delegate, can be divided into smaller steps_
-  - [ ] **planning the route between the matches , both possiblities , by car and public transport**  
+  - [x] **planning the route between the matches , both possiblities , by car and public transport**  
 _by idos.cz api and mapy.cz api whose are free to use_
-  - [ ] **personal card of referee , displaying schedule of the weekend(matches, transports) and all the informations for the specific person**  
+  - [x] **personal card of referee , displaying schedule of the weekend(matches, transports) and all the informations for the specific person**  
   _frontend component_
   - [ ] **automatic generation of possible delegations based on the point system**    
   _algorithmically, we can adjust the points criteria, in order to their importance_
