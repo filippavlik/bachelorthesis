@@ -1,0 +1,602 @@
+﻿@using AdminPart.Views.ViewModels
+@model RefereeCardViewModel
+@using System.Globalization
+
+
+@{
+    ViewData["Title"] = "Karta rozhodčího";
+}
+@{
+    var referee = Model.RefereeWTimeOptions.Referee;
+}
+<style>
+    /* Base styles for all events */
+    .event {
+    position: absolute;
+    height: 75%;
+    top: 12.5%;
+    border-radius: 4px;
+    padding: 3px 6px;
+    box-sizing: border-box;
+    font-size: 0.85em;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    }
+
+    .event:hover {
+    height: 85%;
+    top: 7.5%;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Styles for match events ("zapas") */
+    .zapasref{
+        background-color: #ff7675;
+        border: 1px solid #d63031;
+        color: #2d3436;
+        z-index: 30;
+    }
+
+    .zapasar{
+        background-color: #55efc4;
+        border: 1px solid #00b894;
+        color: #2d3436;
+        z-index: 30;
+    }
+
+    .zapasar:hover {
+        background-color: #a3f7e0;
+        border-color: #66d5b4;
+    }
+
+    .zapasref:hover {
+        background-color: #fab1a0;
+    }
+
+    /* Styles for excuse events ("omluva") */
+    .omluva {
+        background-color: #ffeaa7;
+        border: 1px solid #fdcb6e;
+        color: #2d3436;
+        z-index: 20;
+    }
+
+    .omluva:hover {
+        background-color: #ffeaa7;
+    }
+
+    /* Styles for vehicle events ("vozidlo") with less opacity */
+    .vozidlo {
+        background-color: #74b9ff;
+        border: 1px solid #0984e3;
+        color: #2d3436;
+        z-index: 10;
+    }
+
+
+    .vozidlo:hover {
+    background-color: rgba(116, 185, 255, 0.8);
+    }
+
+    .transfer {
+        background-color: #ff33fb;
+        border: 1px solid #940096;
+        color: #2d3436;
+        z-index: 10;
+    }
+    .transfer:hover{
+            background-color: #ff33fb7a;
+    }
+
+    /* Styles for the event contents */
+    .event-title {
+        font-weight: bold;
+        white-space: normal; /* allow line breaks */
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Custom styles for the schedule */
+    .schedule-container {
+    max-width: 100%;
+    position: relative;
+    overflow-x: auto; /* Add this to enable horizontal scrolling */
+    }
+
+    .time-header, .day-row {
+    display: flex;
+    height: 50px;
+    max-width: 100%;
+    }
+
+    .list-group-excuses {
+    max-height: 250px; /* This constrains the overall height */
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+    padding: 0; /* Removes default padding */
+    margin: 0; /* Removes default margin */
+    }
+
+    .list-group-excuses-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    }
+
+    .list-group-excuses-item:last-child {
+    border-bottom: none;
+    }
+
+    .time-header {
+    border-bottom: 1px solid #ddd;
+    background-color: #f8f9fa;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    }
+
+    .day-label {
+    width: 130px;
+    min-width: 130px;
+    padding: 5px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border-right: 1px solid #ddd;
+    }
+
+    .time-slot {
+    width: 60px;
+    min-width: 60px;
+    text-align: center;
+    padding: 5px 0;
+    border-right: 1px dashed #ddd;
+    font-size: 0.8rem;
+    }
+
+    .day-timeline {
+    flex: 1;
+    position: relative;
+    min-width: 900px; /* 17 hours * 80px */
+    border-bottom: 1px solid #ddd;
+    }
+
+    .event {
+    position: absolute;
+    height: 40px;
+    top: 10px;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: white;
+    cursor: pointer;
+    }
+
+    .match-event {
+    background-color: #007bff;
+    }
+
+    .excuse-event {
+    background-color: #dc3545;
+    }
+
+    .transfer-event {
+    background-color: #6c757d;
+    }
+
+    .initials {
+    font-size: 50px;
+    color: white;
+    font-weight: bold;
+    }
+
+    /* Custom Context Menu Styles */
+    .custom-context-menu {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+    }
+
+    .context-menu-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    }
+
+    .context-menu-items li {
+    padding: 8px 12px;
+    cursor: pointer;
+    }
+
+    .context-menu-items li:hover {
+    background-color: #f5f5f5;
+    }
+</style>
+@functions {
+    public class PositionData
+    {
+        public double Left { get; set; }
+        public double Width { get; set; }
+    }
+
+    private PositionData CalculatePosition(DateTime startTime, DateTime endTime,DateOnly gameDay)
+    {
+        var startTimeOfDay = startTime.TimeOfDay;
+        var endTimeOfDay = endTime.TimeOfDay;
+
+        double startDecimal = startTimeOfDay.TotalHours;
+        double endDecimal = endTimeOfDay.TotalHours;
+
+        if (DateOnly.FromDateTime(startTime) != gameDay)
+        {
+            startDecimal = 7;
+        }
+        else{
+            if (startDecimal < 7)
+                startDecimal = 7;
+        }
+
+        if (DateOnly.FromDateTime(endTime) != gameDay)
+        {
+            endDecimal = 23;
+        }
+        else
+        {
+            if (endDecimal > 23)
+                endDecimal = 23;
+        }
+
+        double timelineStart = 7;
+        double timelineWidth = 16;
+
+        double left = ((startDecimal - timelineStart) / timelineWidth) * 100;
+        double width = ((endDecimal - startDecimal) / timelineWidth) * 100;
+
+        return new PositionData { Left = left, Width = width };
+    }
+}
+<div class="container mt-2">
+    <!-- First Row -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-8">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Informace o rozhodčím @referee.Name @referee.Surname</h5>
+                </div>
+                    <div class="card-body">
+                    <div class="row">
+                        <!-- Left column -->
+                        <div class="col-md-6 text-left">                       
+                            <div class="form-group">
+                                <label for="refereeId">ID:</label>
+                                <input type="text" class="form-control" id="refereeId" value="@referee.FacrId" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="refereeEmail">Email:</label>
+                                <input type="email" class="form-control" id="refereeEmail" value="@referee.Email" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="refereeAge">Ročník:</label>
+                                <input type="number" class="form-control" id="refereeAge" name="Age" value="@referee.Age" min="1930" max="2050" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="refereeLeague">Soutěž:</label>
+                                <select class="form-control" id="refereeLeague" name="League">
+                                    <option value="0">PŘEBOR</option>
+                                    <option value="1">1.A TŘÍDA</option>
+                                    <option value="2">1.B TŘÍDA</option>
+                                    <option value="3">2. - 3.TŘÍDA</option>
+                                    <option value="4">M</option>
+                                    <option value="5">N</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Right column -->
+                        <div class="col-md-6 text-left mb-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="refereeCar">Má auto k dispozici:</label>
+                                        <select class="form-control" id="refereeCar" name="CarAvailability">
+                                            <option value="true">Ano</option>
+                                            <option value="false">Ne</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="refereePfs">Pfs:</label>
+                                        <select class="form-control" id="refereePfs" name="Ofs">
+                                            <option value="true">Ano</option>
+                                            <option value="false">Ne</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="refereeLiving">Bydlí v:</label>
+                                <input type="text" class="form-control" id="refereePlace" value="@referee.PragueZone" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="refereeNote">Poznámka:</label>
+                                <textarea class="form-control" id="refereeNote">@referee.Note</textarea>
+                            </div>
+
+                                <div class="text-right mt-2">
+                                <button data-id="@referee.RefereeId" data-name="@referee.Name" data-surname="@referee.Surname" id="updateReferee" class="btn btn-outline-secondary btn-sm me-1">Aktualizuj</button>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Excuses List (Right) -->
+        <div class="col-md-4">
+            <div class="card mb-1">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Seznam omluvenek</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group-excuses">
+                        @foreach (var excuse in Model.RefereeWTimeOptions.SortedRanges.Where(x => x.RangeType == "omluva").OrderByDescending(x => x.Start))
+                        {
+                            <li class="list-group-excuses-item">Omluva od @excuse.Start.ToString("d.M HH:m") to @excuse.End.ToString("d.M HH:m")</li>
+
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Second Row (Schedule Rozvrh) -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Rozvrh</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="schedule-container">
+                        <!-- Time header -->
+                        <div class="time-header">
+                            <div class="day-label"></div>
+                            @for (int hour = 7; hour <= 22; hour++)
+                            {
+                                <div class="time-slot">@(hour):00</div>
+                            }
+                        </div>                     
+
+                        @{
+                            var firstGameDay = (DateOnly)ViewBag.firstGameDay;
+                            var firstGameDayMinusOne = firstGameDay.AddDays(-1);
+                            var firstGameDayPlusOne = firstGameDay.AddDays(1);
+                        }
+
+                        <!-- Friday Schedule -->
+                        <div class="day-row" data-day="Friday">
+                            <div class="day-label">
+                                @(firstGameDayMinusOne.ToString("dddd (d.M)", new System.Globalization.CultureInfo("cs-CZ")))
+                            </div>
+                            <div class="day-timeline">
+                                @foreach (var range in Model.RefereeWTimeOptions.SortedRanges.Where(e => DateOnly.FromDateTime(e.Start) == firstGameDayMinusOne  //it starts in this day
+                                                                                    || DateOnly.FromDateTime(e.End) == firstGameDayMinusOne     //it ends in this day
+                                                                                    || (DateOnly.FromDateTime(e.Start) < firstGameDayMinusOne && DateOnly.FromDateTime(e.End) > firstGameDayMinusOne) //if it starts before and ends later
+                                ))
+                                {
+                                    var positionData = CalculatePosition(range.Start, range.End, firstGameDayMinusOne);
+                                    <div class="event @range.RangeType.ToLower()" style="left: @(positionData.Left)%; width: @(positionData.Width)%;">
+                                        <div class="event-title">
+                                            <p style="margin: 2px;font-size:10px;">@range.Start.ToString("t", new CultureInfo("cs-CZ")) - @range.End.ToString("t", new CultureInfo("cs-CZ"))</p>
+                                            @switch (range.RangeType.ToLower())
+                                            {
+                                                case "zapasref":
+                                                    <a href="#match_pane_@range.MatchId">@range.MatchId</a>
+                                                    break;
+                                                case "zapasar":
+                                                    <a href="#match_pane_@range.MatchId">@range.MatchId</a>
+                                                    break;
+                                                case "omluva":
+                                                    <a class="excuseHref" href="#excuseWithinPreview_@range.ExcuseId">@range.ExcuseId</a>
+                                                    break;
+                                                case "vozidlo":
+                                                    @range.SlotId
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        </div>                                       
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Saturday Schedule -->
+                        <div class="day-row" data-day="Saturday">
+                            <div class="day-label">
+                                @(firstGameDay.ToString("dddd (d.M)", new System.Globalization.CultureInfo("cs-CZ")))
+                            </div>
+                            <div class="day-timeline">
+                                @foreach (var range in Model.RefereeWTimeOptions.SortedRanges.Where(e => DateOnly.FromDateTime(e.Start) == firstGameDay
+                                                                                    || DateOnly.FromDateTime(e.End) == firstGameDay
+                                                                                    || (DateOnly.FromDateTime(e.Start) < firstGameDay && DateOnly.FromDateTime(e.End) > firstGameDay)
+                                ))
+                                {
+                                    var positionData = CalculatePosition(range.Start, range.End, firstGameDay);
+                                    <div class="event @range.RangeType.ToLower()" style="left: @(positionData.Left)%; width: @(positionData.Width)%;">
+                                        <div class="event-title">
+                                            <p style="margin: 2px;font-size:10px;">@range.Start.ToString("t", new CultureInfo("cs-CZ")) - @range.End.ToString("t", new CultureInfo("cs-CZ"))</p>
+                                            @switch (range.RangeType.ToLower())
+                                            {
+                                                case "zapasref":
+                                                    <a href="#match_pane_@range.MatchId">@range.MatchId</a>
+                                                    break;
+                                                case "zapasar":
+                                                    <a href="#match_pane_@range.MatchId">@range.MatchId</a>
+                                                    break;
+                                                case "omluva":
+                                                    <a class="excuseHref" href="#excuseWithinPreview_@range.ExcuseId">@range.ExcuseId</a>
+                                                    break;
+                                                case "vozidlo":
+                                                    @range.SlotId
+                                                    break;                                               
+                                                default:
+                                                    break;
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Sunday Schedule -->
+                        <div class="day-row" data-day="Sunday">
+                            <div class="day-label">
+                                @(firstGameDayPlusOne.ToString("dddd (d.M)", new System.Globalization.CultureInfo("cs-CZ")))
+                            </div>
+                            <div class="day-timeline">
+                                @foreach (var range in Model.RefereeWTimeOptions.SortedRanges.Where(e => DateOnly.FromDateTime(e.Start) == firstGameDayPlusOne
+                                                                                    || DateOnly.FromDateTime(e.End) == firstGameDayPlusOne
+                                                                                    || (DateOnly.FromDateTime(e.Start) < firstGameDayPlusOne && DateOnly.FromDateTime(e.End) > firstGameDayPlusOne)
+                              ))
+                                {
+                                    var positionData = CalculatePosition(range.Start, range.End, firstGameDayPlusOne);
+                                    <div class="event @range.RangeType.ToLower()" style="left: @(positionData.Left)%; width: @(positionData.Width)%;">
+                                        <div class="event-title">
+                                            <p style="margin: 2px;font-size:10px;">@range.Start.ToString("t", new CultureInfo("cs-CZ")) - @range.End.ToString("t", new CultureInfo("cs-CZ"))</p>
+                                            @switch (range.RangeType.ToLower())
+                                            {
+                                                case "zapasref":
+                                                    <a href="#match_pane_@range.MatchId">@range.MatchId</a>
+                                                    break;
+                                                case "zapasar":
+                                                    <a href="#match_pane_@range.MatchId">@range.MatchId</a>
+                                                    break;
+                                                case "omluva":
+                                                    <a class="excuseHref" href="#excuseWithinPreview_@range.ExcuseId">@range.ExcuseId</a>
+                                                    break;
+                                                case "vozidlo":
+                                                    @range.SlotId
+                                                    break;
+                                                default:                                                    
+                                                    break;
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Third Row (Veto Upload and Preview) -->
+    <div class="row">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">Veta rozhodčího</h5>
+            </div>
+            <div class="card-body p-0">
+                <table style="table-layout: fixed;" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width:220px;">Název tímu</th>
+                            <th style="width:120px;">Id tímu</t>
+                            <th style="width:220px;">Název soutěže</th>
+                            <th style="width:120px;">Id soutěže</th>
+                            <th style="width:300px;">Poznámka</th>
+                            <th style="width:50px;"></th>
+                            <th style="width:50px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="text" id="vetoTeamName" placeholder="Zadejte název týmu" style="width:200px;"/>
+                            </td>
+                            <td>
+                                <input type="text" id="vetoTeamId" placeholder="Zadejte id týmu" style="width:100px;" />
+                            </td>
+                            <td>
+                                <select class="form-control" id="vetoCompetitionName" name="vetoCompetitionName" style="width:200px;">
+                                    <option selected disabled>Vyberte název soutěže</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-control" id="vetoCompetitionId" name="vetoCompetitionId" style="width:100px;">
+                                    <option selected disabled>Vyberte id soutěže</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" id="newNote" placeholder="Poznámka" style="width:280px;" />
+                            </td>
+                            <td>
+                                <button id="addVeto" type="button" data-referee-id="@referee.RefereeId" class="btn btn-primary">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        @foreach (var veto in Model.Vetoes)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="text" value="@veto.Team.Name" readonly style="width:200px;" />
+                                </td>
+                                <td>
+                                    <input type="text" value="@veto.Team.TeamId" readonly style="width:100px;" />
+                                </td>
+                                <td>
+                                    <input type="text" value="@veto.Competition.CompetitionName" readonly style="width:200px;" />
+                                </td>
+                                <td>
+                                    <input type="text" value="@veto.Competition.CompetitionId" readonly style="width:100px;" />
+                                </td>
+                                <td>
+                                    <input id="noteOfVeto" type="text" value="@veto.Note" style="width:280px;"/>
+                                </td>
+                                <td>
+                                    <button id="updateVeto" type="submit" data-id="@veto.VetoId" class="btn btn-success">
+                                        <i class="fa fa-save"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button id="deleteVeto"  data-id="@veto.VetoId" class="btn">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#refereeLeague').val('@Model.RefereeWTimeOptions.Referee.League');
+         $('#refereeCar').val('@Model.RefereeWTimeOptions.Referee.CarAvailability.ToString().ToLower()');
+        $('#refereePfs').val('@Model.RefereeWTimeOptions.Referee.Ofs.ToString().ToLower()');
+
+    });
+</script>

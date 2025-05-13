@@ -1,0 +1,39 @@
+﻿@model IEnumerable<AdminPart.Models.Excuse>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Datum nahrání</th>
+            <th>Jméno a příjmení</th>
+            <th>Od</th>
+            <th>Do</th>
+            <th>Důvod</th>
+            <th>Poznámka</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var e in Model)
+        {
+            //highliht excuses whose are not in time (14 days before the gaming weeks)
+            var firstGameDay = ViewBag.FirstGameDay != null ? (DateOnly)ViewBag.FirstGameDay : (DateOnly?)null;
+            var bgColor = "";
+
+            if (firstGameDay.HasValue && e.DatetimeAdded.Date < firstGameDay.Value.AddDays(-12).ToDateTime(TimeOnly.MinValue))
+            {
+                bgColor = "background-color: white;";
+            }
+            else
+            {
+                bgColor = "background-color: red;";
+            }
+            <tr id="excuseWithinPreview_@e.ExcuseId">
+                <td style="@bgColor">@e.DatetimeAdded.ToString("dd.MM.yy HH:mm")</td>
+                <td>@e.Referee.Name @e.Referee.Surname</td>
+                <td>@e.DateFrom.ToString("dd.MM.yy") @e.TimeFrom</td>
+                <td>@e.DateFrom.ToString("dd.MM.yy") @e.TimeTo</td>
+                <td>@e.Reason</td>
+                <td>@e.Note</td>
+            </tr>
+        }
+    </tbody>
+</table>

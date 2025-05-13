@@ -1,0 +1,44 @@
+version: '3.8'
+
+networks:
+  referee-network:
+    external: true
+  administration-network:
+    external: true
+  shared-emails-network:
+    external: true
+
+services:
+  admin-application-container:
+    container_name: admin-application-container
+    image: adminpart
+    environment:
+      - POSTGRES_DB=mydb
+    networks:
+      administration-network:
+        ipv4_address: 172.18.1.2
+      referee-network:
+        ipv4_address: 172.18.2.2
+      shared-emails-network:
+        ipv4_address: 172.18.3.3
+    secrets:
+      - AzureClientId
+      - AzureClientSecret
+      - AzureTenantId
+      - AzureVaultURI
+      - JwtIssuer
+      - JwtAudience
+    user: root
+secrets:
+        AzureClientId:
+          file: ./secrets/AzureClientId
+        AzureClientSecret:
+          file: ./secrets/AzureClientSecret
+        AzureTenantId:
+          file: ./secrets/AzureTenantId
+        AzureVaultURI:
+          file: ./secrets/AzureVaultURI
+        JwtIssuer:
+          file: ./secrets/JwtIssuer
+        JwtAudience:
+          file: ./secrets/JwtAudience
