@@ -3,6 +3,8 @@ version: '3.8'
 networks:
   login-network:
     external: true
+  shared-emails-network:
+    external: true
 
 services:
   login-application-container:
@@ -13,6 +15,8 @@ services:
     networks:
       login-network:
         ipv4_address: 172.18.0.2  # Static IP within the subnet
+      shared-emails-network:
+        ipv4_address: 172.18.3.2   # Static IP within the subnet
     secrets:
       - AzureClientId
       - AzureClientSecret
@@ -20,9 +24,9 @@ services:
       - AzureVaultURI
       - JwtAudience
       - JwtIssuer
-      - RedirectAdmin 
+      - RedirectAdmin
       - RedirectReferee
-
+    user: "1001:1001"
 secrets:
   AzureClientId:
     file: ./secrets/AzureClientId
