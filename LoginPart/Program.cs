@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using SendGrid.Extensions.DependencyInjection;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using System.Net;
 //TOP LEVEL STATEMENTS
 // Get access information for AzureKey Vault 
 string vaultUri = File.ReadAllText("/run/secrets/AzureVaultURI").Trim();
@@ -40,6 +41,10 @@ string connectionString = $"Host={_host};Port={_port};Database={_database};Usern
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Listen(IPAddress.Any, 8080); // Listens on both IPv4 and IPv6
+});
 //Configure SendGrid Api key
 builder.Services.AddSendGrid(options =>
     options.ApiKey = sendGridKey!
@@ -82,6 +87,14 @@ builder.Services.AddIdentity<Users, IdentityRole>(options =>
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+// Suppress EF Core SQL command logging
+builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.None);
+// Minimize Microsoft and System logging
+builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
+builder.Logging.AddFilter("System", LogLevel.Warning);
 
 
 
