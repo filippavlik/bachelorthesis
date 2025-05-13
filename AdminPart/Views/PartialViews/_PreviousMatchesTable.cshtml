@@ -1,0 +1,28 @@
+﻿@model IEnumerable<AdminPart.Models.FilesPreviousDelegation>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Název souboru</th>
+            <th>Počet delegací</th>
+            <th>Od</th>
+            <th>Do</th>
+            <th>Datum nahrání</th>
+            <th>Nahrál (uživatel ID)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var file in Model)
+        {
+            <tr>
+                <td>@file.FileName</td>
+                <td>@file.AmountOfMatches</td>
+                <td>@file.DelegationsFrom.ToString("dd.MM.yyyy")</td>
+                <td>@file.DelegationsTo.ToString("dd.MM.yyyy")</td>
+                <td>@file.FileUploadedDatetime.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@file.FileUploadedBy</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
