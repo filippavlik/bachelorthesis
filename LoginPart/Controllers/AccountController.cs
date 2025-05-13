@@ -1,4 +1,4 @@
-﻿using LoginPart.Data;
+using LoginPart.Data;
 using LoginPart.Identity;
 using LoginPart.Models;
 using LoginPart.ViewModels;
@@ -14,33 +14,35 @@ namespace UsersApp.Controllers
 
     public class AccountController : Controller
     {
-	    
-	private readonly string m_redirectAdmin;
-	private readonly string m_redirectReferee;
 
-	private readonly IConfiguration m_configuration;
+        private readonly string m_redirectAdmin;
+        private readonly string m_redirectReferee;
+
+        private readonly IConfiguration m_configuration;
         private readonly SignInManager<Users> m_signInManager;
         private readonly UserManager<Users> m_userManager;
         private readonly LoginPart.Data.AppDbContext m_appDbContext;
+        private readonly ILogger<AccountController> m_logger;
 
         private readonly LoginPart.Identity.IEmailSender m_emailSender;
-        private readonly IJwtTokenService m_jwtTokenService; 
+        private readonly IJwtTokenService m_jwtTokenService;
 
-        public AccountController(IConfiguration configuration,SignInManager<Users> signInManager, UserManager<Users> userManager, LoginPart.Data.AppDbContext appDbContext, LoginPart.Identity.IEmailSender emailSender,LoginPart.Identity.IJwtTokenService jwtTokenService)
+        public AccountController(ILogger<AccountController> logger,IConfiguration configuration,SignInManager<Users> signInManager, UserManager<Users> userManager, LoginPart.Data.AppDbContext appDbContext, LoginPart.Identity.IEmailSender emailSender,LoginPart.Identity.IJwtTokenService jwtTokenService)
         {
-	    this.m_configuration = configuration;
+            this.m_configuration = configuration;
             this.m_signInManager = signInManager;
             this.m_userManager = userManager;
             this.m_emailSender = emailSender;
             this.m_appDbContext = appDbContext;
+            this.m_logger = logger;
             this.m_jwtTokenService = jwtTokenService;
-	    this.m_redirectAdmin = GetDockerSecret("RedirectAdmin");
-	    this.m_redirectReferee = GetDockerSecret("RedirectReferee");
+            this.m_redirectAdmin = GetDockerSecret("RedirectAdmin");
+            this.m_redirectReferee = GetDockerSecret("RedirectReferee");
         }
 
         #region PRIVATE METHODS
-	
-	//access databaze of emails from Pfs and return the privileges for the email 
+
+        //access databaze of emails from Pfs and return the privileges for the email
         private async Task<string?> GetRoleForEmail(string email)
         {
             var roleMapping = new Dictionary<int, string>
@@ -52,18 +54,18 @@ namespace UsersApp.Controllers
 
             var role = await m_appDbContext.AllowedEmailAddresses
                 .Where(a => a.Email == email)
-                .Select(a => new { a.Role })
+                .Select(a => new{ a.Role })
                 .FirstOrDefaultAsync();
 
             return role != null && roleMapping.ContainsKey(role.Role) ? roleMapping[role.Role] : null;
-	}
+        }
 
-	//read secret from file
-	private string GetDockerSecret(string secretName)
-	{
-    		string path = $"/run/secrets/{secretName}";
-	    	return System.IO.File.Exists(path) ? System.IO.File.ReadAllText(path).Trim() : null;
-	}
+        //read secret from file
+        private string GetDockerSecret(string secretName)
+        {
+                string path = $"/run/secrets/{secretName}";
+                return System.IO.File.Exists(path) ? System.IO.File.ReadAllText(path).Trim() : null;
+        }
 
         #endregion PRIVATE METHODS
 
@@ -75,66 +77,74 @@ namespace UsersApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                // Check if the user is locked out before attempting to sign in
-                var user = await m_userManager.FindByNameAsync(model.Email);
-                if (user != null && await m_userManager.IsLockedOutAsync(user))
-                {
-                    ModelState.AddModelError("", "Account is locked. Please try again later.");
-                    return View(model);
-                }
+	    try
+		{
+            		if (ModelState.IsValid)
+            		{
+                		// Check if the user is locked out before attempting to sign in
+                		var user = await m_userManager.FindByNameAsync(model.Email);
+                		if (user != null && await m_userManager.IsLockedOutAsync(user))
+                		{
+                    			ModelState.AddModelError("", "Account is locked. Please try again later.");
+                    			return View(model);
+                		}
 
-                var result = await m_signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
-		
-                if (result.Succeeded)
-                {
-                    var role = await GetRoleForEmail(model.Email);
+                		var result = await m_signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
 
-                    if (role != null)
-                    {
-                        if (!await m_userManager.IsInRoleAsync(user, role))
-				{
-				    await m_userManager.AddToRoleAsync(user, role);
-				}
-				var roles = await m_userManager.GetRolesAsync(user);
+                		if (result.Succeeded)
+                		{
+                    			var role = await GetRoleForEmail(model.Email);
 
-				if (roles.Any())
-				{
-				    // Use your existing method to generate the token
-        		            var token = m_jwtTokenService.GenerateToken(user, roles.FirstOrDefault());
+                    			if (role != null)
+                    			{
+                        			if (!await m_userManager.IsInRoleAsync(user, role))
+                                		{
+                                    			await m_userManager.AddToRoleAsync(user, role);
+                                		}
+                                		var roles = await m_userManager.GetRolesAsync(user);
 
-        		            // Set token in HTTP-only cookie
-         			    Response.Cookies.Append("auth_token", token, new CookieOptions
-        				{
-            					HttpOnly = true,
-            					Secure = true,
-            					SameSite = SameSiteMode.Lax,
-            					Expires = DateTime.Now.AddMinutes(30), // Match the token expiration time
-            					Domain = ".rozhodcipraha.cz", // Allow sharing across subdomains
-        					Path = "/" // Ensures the cookie is accessible across all paths in the domain
-						});
-				    // Determine the redirect URL based on the user's role
-				    switch (roles.FirstOrDefault())
-				    {
-					case "MainAdmin":
-					case "Admin":
-					    //user with access to two roles can choose where to login
-					    if (model.UserType != "referee")
-					    {
-					    	return Redirect(m_redirectAdmin); // AdminPart container
-					    }
-					    break;
-					case "Referee":
-					    return Redirect(m_redirectReferee); // RefereePart container
-					    break;
-					default:
-					    return Redirect("/Home/Index"); // Default fallback
-					    break;
-				    }
-                        	   
-				}
-                       
+                                		if (roles.Any())
+                                		{
+                                        		// Determine the redirect URL based on the user's role
+                                        		if (roles.Contains("Referee") && model.UserType == "referee")
+                                        		{
+                                                		// Use your existing method to generate the token
+                                                		var token = m_jwtTokenService.GenerateToken(user,"Referee");
+
+                                                		// Set token in HTTP-only cookie
+                                                		Response.Cookies.Append("auth_token", token, new CookieOptions
+                                                		{
+                                                        		HttpOnly = true,
+                                                        		Secure = true,
+                                                        		SameSite = SameSiteMode.Lax,
+                                                        		Expires = DateTime.Now.AddMinutes(30), // Match the token expiration time
+                                                        		Domain = ".rozhodcipraha.cz", // Allow sharing across subdomains
+                                                        		Path = "/" // Ensures the cookie is accessible across all paths in the domain
+                                                		});
+                                                		return Redirect(m_redirectReferee); // RefereePart container
+                                	}
+                                	else if (roles.Contains("MainAdmin") || roles.Contains("Admin"))
+                                	{
+                                        string token;
+                                        if(roles.Contains("MainAdmin"))
+                                                token = m_jwtTokenService.GenerateToken(user,"MainAdmin");
+                                        else
+                                                token = m_jwtTokenService.GenerateToken(user,"Admin");
+
+                                                // Set token in HTTP-only cookie
+                                        Response.Cookies.Append("auth_token", token, new CookieOptions
+                                                {
+                                                        HttpOnly = true,
+                                                        Secure = true,
+                                                        SameSite = SameSiteMode.Lax,
+                                                        Expires = DateTime.Now.AddMinutes(30), // Match the token expiration time
+                                                        Domain = ".rozhodcipraha.cz", // Allow sharing across subdomains
+                                                        Path = "/" // Ensures the cookie is accessible across all paths in the domain
+                                                });
+                                        return Redirect(m_redirectAdmin); // AdminPart container
+                                }
+                        }
+
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -152,12 +162,19 @@ namespace UsersApp.Controllers
                 }
                 else
                 {
-		    //Unsucessfull login attempt
+                    //Unsucessfull login attempt
                     ModelState.AddModelError("", "Invalid login attempt.");
-	       	    return View(model);
+                    return View(model);
                 }
             }
             return View(model);
+	    }catch (Exception ex)
+	{
+    		 m_logger.LogError(ex, "[Login] Error login controller");
+                 ModelState.AddModelError("", "Error on server side.");
+                 return View(model);
+
+	}
         }
 
         public IActionResult Register()
@@ -168,6 +185,7 @@ namespace UsersApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+	  try{
             if (ModelState.IsValid)
             {
                 Users user = new Users
@@ -181,25 +199,25 @@ namespace UsersApp.Controllers
 
                 if (result.Succeeded)
                 {
-	            		
-		    try
-		    {
-                    	// Generate email confirmation token
-                    	var token = await m_userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                    	// Create confirmation link
-                    	var confirmationLink = Url.Action("ConfirmEmail", "Account",
-                        	new { userId = user.Id, token = token }, Request.Scheme);
+                    try
+                    {
+                        // Generate email confirmation token
+                        var token = await m_userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                    	// Send email with confirmation link
-                    	await m_emailSender.SendEmailAsync(user.Email, "Confirm your email",
-                        	$"Please confirm your account by <a href='{confirmationLink}'>clicking here</a>.");
-		    }
-		    catch(Exception emptySendGrid)
-		    {
-		    	ModelState.AddModelError("", "Error in proccess of sending email , please contact the support!");
-                    	return View(model);
-		    }
+                        // Create confirmation link
+                        var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                                new { userId = user.Id, token = token }, Request.Scheme);
+
+                        // Send email with confirmation link
+                        await m_emailSender.SendEmailAsync(user.Email, "Confirm your email",
+                                $"Please confirm your account by <a href='{confirmationLink}'>clicking here</a>.");
+                    }
+                    catch(Exception emptySendGrid)
+                    {
+                        ModelState.AddModelError("", "Error in proccess of sending email , please contact the support!");
+                        return View(model);
+                    }
 
                     // Redirect to a page that tells the user to check their email
                     return RedirectToAction("RegisterConfirmation", "Account", new { email = user.Email });
@@ -207,10 +225,17 @@ namespace UsersApp.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Error in proccess of creating user , please contact the support!");
-			    return View(model);
+                            return View(model);
                 }
             }
-	    return View(model);
+            return View(model);
+	}catch (Exception ex)
+	{
+    		 m_logger.LogError(ex, "[Login] Error login controller");
+                 ModelState.AddModelError("", "Error on server side.");
+                 return View(model);
+
+	}
         }
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
@@ -223,7 +248,7 @@ namespace UsersApp.Controllers
             var user = await m_userManager.FindByIdAsync(userId);
             if (user == null)
             {
-		return NotFound("Unable to load user.");
+                return NotFound("Unable to load user.");
             }
 
             var result = await m_userManager.ConfirmEmailAsync(user, token);
@@ -262,21 +287,22 @@ namespace UsersApp.Controllers
                     return RedirectToAction("ForgotPasswordConfirmation");
                 }
 
-		try
-		{
-                	// Generate password reset token
-                	var token = await m_userManager.GeneratePasswordResetTokenAsync(user);
-
-                	// Create reset password link
-                	var resetLink = Url.Action("ResetPassword", "Account",
-                    		new { email = model.Email, token = token }, Request.Scheme);
-
-                	// Send email with reset link
-                	await m_emailSender.SendEmailAsync(model.Email, "Reset your password",
-   				$"Please reset your password by <a href='{resetLink}'>clicking here</a>.");
-	    	}
-		catch(ArgumentNullException emptySendGrid)
+                try
                 {
+                        // Generate password reset token
+                        var token = await m_userManager.GeneratePasswordResetTokenAsync(user);
+
+                        // Create reset password link
+                        var resetLink = Url.Action("ResetPassword", "Account",
+                                new { email = model.Email, token = token }, Request.Scheme);
+
+                        // Send email with reset link
+                        await m_emailSender.SendEmailAsync(model.Email, "Reset your password",
+                                $"Please reset your password by <a href='{resetLink}'>clicking here</a>.");
+                }
+                catch(ArgumentNullException emptySendGrid)
+                {
+			m_logger.LogError(emptySendGrid, "[Login] Error login controller");
                         ModelState.AddModelError("", "Error in proccess of sending email , please contact the support!");
                         return View(model);
                 }
@@ -326,10 +352,10 @@ namespace UsersApp.Controllers
                 {
                     return RedirectToAction("ResetPasswordConfirmation");
                 }
-		else
-		{
+                else
+                {
                     ModelState.AddModelError("", "Error in proccess of reseting password , please contact the support!");
-		}
+                }
 
             }
 
@@ -344,14 +370,14 @@ namespace UsersApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await m_signInManager.SignOutAsync();
-	    // Clear the auth cookie
-        	Response.Cookies.Delete("auth_token", new CookieOptions
-        	{
-            		HttpOnly = true,
-            		Secure = true,
-            		SameSite = SameSiteMode.Lax,
-            		Domain = ".rozhodcipraha.cz"
-        	});
+            // Clear the auth cookie
+                Response.Cookies.Delete("auth_token", new CookieOptions
+                {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Lax,
+                        Domain = ".rozhodcipraha.cz"
+                });
             return RedirectToAction("Index", "Home");
         }
     }

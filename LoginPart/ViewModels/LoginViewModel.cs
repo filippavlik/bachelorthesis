@@ -4,13 +4,13 @@ namespace LoginPart.ViewModels
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "Email is required")]
+        [Required(ErrorMessage = "E-mail je povinný.")]
         [EmailAddress]
         public string Email { get; set; }
-        [Required(ErrorMessage ="Password is required.")]
+        [Required(ErrorMessage ="Heslo je povinné.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        [Display(Name ="Remember me?")]
+        [Display(Name ="Pamatovat si mě?")]
         public bool RememberMe { get; set; }
 	
 	public string UserType { get; set; }
