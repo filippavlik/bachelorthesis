@@ -18,5 +18,3 @@ LoginPart/publish/*
 LoginPart/secrets
 LoginPart/secrets/*
 .dockerignore
-.gitignore
-
