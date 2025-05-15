@@ -8,8 +8,11 @@ namespace AdminPart.Services.AdminServices
     public interface IAdminService 
     {
         /// <summary>
-        /// Calculates the percentage of matches that have been delegated to referees.
+        /// Calculates the percentage of matches that have been delegated with at least one referee.
         /// </summary>
+	/// <remarks>
+	/// Every time it is showing only the matches who will be played in the future.
+	/// </remarks>
         /// <param name="matches">The list of matches to evaluate.</param>
         /// <returns>The percentage of delegated matches as an integer (0-100).</returns>
         public int GetPercentageOfDelegatedMatches(List<MatchViewModel> matches);
@@ -17,13 +20,11 @@ namespace AdminPart.Services.AdminServices
         /// Retrieves and compiles statistics about referees' involvement with a specific team's matches.
         /// </summary>
         /// <remarks>
-        /// This asynchronous method analyzes the history of referee assignments for a specific team by:
-        /// 1. Retrieving all matches for the specified team and competition
-        /// 2. Calculating statistics based on whether the official served as main referee or assistant referee
-        /// 3. Counting home and away matches for each referee
-        /// 4. Checking for any existing veto records between the team and referees
-        /// 5. Combining all data into comprehensive statistics objects
-        /// 
+        /// This asynchronous method analyzes the history of referee delegation for a specific team by:
+	/// 1. Calculating statistics based on whether the official was delegated as referee or assistant refereei
+        /// 2. Counting home and away matches for each referee
+        /// 3. Checking for any existing veto records between the team and referee
+        ///
         /// For vetoed referees, the method returns predefined values (6 for both home and away counts).
         /// </remarks>
         /// <param name="request">
@@ -38,7 +39,6 @@ namespace AdminPart.Services.AdminServices
         /// - A success result with a list of RefereesTeamsMatchesResponseDto objects containing statistics, or
         /// - A failure result with an error message if processing failed
         /// </returns>
-        /// <exception cref="Exception">May throw exceptions during data retrieval or processing</exception>
         public Task<ServiceResult<List<RefereesTeamsMatchesResponseDto>>> GetRefereeMatchStatsAsync(RefereesTeamsMatchesRequestDto request);
 
         /// <summary>
@@ -47,20 +47,19 @@ namespace AdminPart.Services.AdminServices
         /// <remarks>
         /// This method processes each UnfilledMatchDto by:
         /// 1. Extracting and validating the competition code from the match number
-        /// 2. Retrieving or creating the appropriate competition record
+        /// 2. Retrieving the appropriate competition record
         /// 3. Retrieving or creating the field record
         /// 4. Validating and retrieving or creating team records for both home and away teams
         /// 5. Converting match date and time information from the DTO
         /// 6. Creating a timestamp using Central European Standard Time
         /// 7. Assembling all components into a complete Match entity
         /// </remarks>
-        /// <param name="listOfMatches">A collection of UnfilledMatchDto objects containing raw match data</param>
+        /// <param name="listOfMatches">A collection of UnfilledMatchDto objects containing raw match data(most ids)</param>
         /// <returns>
         /// A ServiceResult containing either:
         /// - A success result with a list of fully-populated Match objects, or
         /// - A failure result with an error message if processing failed
         /// </returns>
-        /// <exception cref="Exception">May throw exceptions during competition, field, or team processing</exception>
         public ServiceResult<List<Models.Match>> ProccessDtosToMatches(List<UnfilledMatchDto> listOfMatches,string user);
 
         /// <summary>
@@ -74,11 +73,11 @@ namespace AdminPart.Services.AdminServices
         /// 4. Establishing bi-directional links (PreMatch/PostMatch) between matches when:
         ///    - They occur on the same field
         ///    - The second match starts within an acceptable time window after the first ends
-        ///      (between reserveBetweenMatches and reserveToSecondMatch minutes)
+        ///      (in the time slot from match end + reserveBetweenMatches to match end + reserveToSecondMatch)
         /// 
         /// The time window for valid connections is controlled by the class fields:
-        /// - reserveBetweenMatches: Minimum minutes required between matches
-        /// - reserveToSecondMatch: Maximum minutes allowed between matches
+        /// - reserveBetweenMatches: Minimum minutes required between matches (30)
+        /// - reserveToSecondMatch: Maximum minutes allowed between matches (75)
         /// </remarks>
         /// <param name="matches">A list of MatchViewModel objects to be processed and connected</param>
         /// <returns>
@@ -86,7 +85,6 @@ namespace AdminPart.Services.AdminServices
         /// - A success result with the processed list of matches including connection information, or
         /// - A failure result with an error message if processing failed
         /// </returns>
-        /// <exception cref="Exception">May throw exceptions during the match connection process</exception>
         public ServiceResult<List<MatchViewModel>> MakeConnectionsOfMatches(List<MatchViewModel> matches);
 
         /// <summary>

@@ -298,7 +298,10 @@ namespace AdminPart.Controllers
 			DateTime timestampChangeHub = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time"));
 
                     await _hubContext.Clients.All.SendAsync("AcceptChangeMatchRemove", matchId, updatedReferee.Referee.RefereeId,user,timestampChangeHub);
-                    await _hubContext.Clients.All.SendAsync("AcceptChangeReferee", refereeId, updatedReferee);
+                    await _hubContext.Clients.All.SendAsync("AcceptChangeReferee", new {
+                                refereeId = refereeId,
+                                refereeData = updatedReferee
+                        });
 
                     return Ok(resultOfTransaction.Message);
                 }

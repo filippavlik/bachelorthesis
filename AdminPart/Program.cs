@@ -18,7 +18,6 @@ using AdminPart.Models;
 using AdminPart.Hubs;
 using AdminPart.Services.RouteServices;
 using Aspose.Cells.Charts;
-//TOP LEVEL STATEMENTS
 // Get access information for AzureKey Vault
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +53,7 @@ const string _hostReferee = "172.18.2.4";
 const string _databaseReferee = "mydb";
 const string _portReferee = "5432";
 string connectionStringReferee = $"Host={_hostReferee};Port={_portReferee};Database={_databaseReferee};Username={postgreRefereeUsername};Password={postgreRefereePassword};";
+
 // Configure SignalR for real-time communication between server and clients
 builder.Services.AddSignalR(options => 
 {
@@ -64,7 +64,6 @@ builder.Services.AddSignalR(options =>
     // Enable detailed error messages
     options.EnableDetailedErrors = true;
     
-    // Increase maximum message size if needed
     options.MaximumReceiveMessageSize = 102400; // 100 KB
 })
 .AddJsonProtocol(options => 
@@ -155,7 +154,7 @@ builder.Services.AddSingleton<RouteByBusPlanner>(sp =>
 // Register scoped services (one instance per request)
 builder.Services.AddScoped<IExcelParser, GetData>();       // Excel data import
 builder.Services.AddScoped<IExcelExporter, ExportData>();  // Excel data export
-builder.Services.AddScoped<EmailsToLoginDbSender>();
+builder.Services.AddScoped<EmailsToLoginDbSender>();       //Email sender to login database
 builder.Services.AddScoped<IRefereeService, RefereeService>(); // Business logic for referees
 builder.Services.AddScoped<IAdminService, AdminService>();     // Business logic for admins
 builder.Services.AddScoped<IRefereeRepo, RefereeRepo>();       // Data access for referees
