@@ -19,6 +19,7 @@ namespace AdminPart.Services.RefereeServices
         private readonly int waitingTimeBeforeMatch = 45;
         private readonly int reserveAfterMatches = 30;
         private readonly int travellingMaximumPeriod = 90;
+	private readonly int locationToBeRelevantTimeGap = 4;
 
         public RefereeService(ILogger<RefereeService> logger, Data.IRefereeRepo refereeRepo)
         {
@@ -430,7 +431,7 @@ namespace AdminPart.Services.RefereeServices
 
                 var timeDifference = startDateTime - previousMatch.MatchDate.ToDateTime(previousMatch.MatchTime);
 
-                if (timeDifference.TotalHours <= 2)
+                if (timeDifference.TotalHours <= locationToBeRelevantTimeGap)
                 {
                     var location = Tuple.Create(previousMatch.Field.Latitude, previousMatch.Field.Longitude);
                     return ServiceResult<Tuple<float, float>>.Success(location);
@@ -463,7 +464,7 @@ namespace AdminPart.Services.RefereeServices
 
                 var timeDifference = nextMatch.MatchDate.ToDateTime(nextMatch.MatchTime) - startDateTime;
 
-                if (timeDifference.TotalHours <= 2)
+                if (timeDifference.TotalHours <= locationToBeRelevantTimeGap)
                 {
                     var location = Tuple.Create(nextMatch.Field.Latitude, nextMatch.Field.Longitude);
                     return ServiceResult<Tuple<float, float>>.Success(location);
@@ -490,17 +491,17 @@ namespace AdminPart.Services.RefereeServices
             const int TEAM_PENALTY_ADDITIONAL_AT_HOME = -10;
 
             const int TEAM_PENALTY_FIRST_TWO_AWAY = -2;
-            const int TEAM_PENALTY_THIRD_AWAY = -2;
+            const int TEAM_PENALTY_THIRD_AWAY = -3;
             const int TEAM_PENALTY_ADDITIONAL_AWAY = -5;
 
             const int DISTANCE_PENALTY_PER_5KM = -3;
 
             const int WEEKEND_PENALTY_PER_MATCH_AR = -2;
             const int WEEKEND_PENALTY_PER_MATCH_R = -3;
-
+	    
             try
             {
-                // Convert match data into dictionaries for fast lookup by refereeId
+		// Convert match data into dictionaries for fast lookup by refereeId
                 var homeMatchesByReferee = homeMatches.ToDictionary(x => x.RefereeId);
                 var awayMatchesByReferee = awayMatches.ToDictionary(x => x.RefereeId);
                 var totalMatchesByReferee = totalMatches.ToDictionary(x => x.RefereeId);

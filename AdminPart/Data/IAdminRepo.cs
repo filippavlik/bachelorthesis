@@ -7,28 +7,37 @@ using System.Security.Cryptography;
 namespace AdminPart.Data
 {
         /// <summary>
-        /// Interface for managing administrative data in the repository.
+        /// Interface for managing data within admin-database in the repository.
         /// </summary>
         public interface IAdminRepo
         {
             /// <summary>
-            /// Adds a list of matches to the database.
+            /// Adds a <paramref name="listOfMatches"/> to the database.
             /// </summary>
+	    /// <remarks>
+	    /// The matches into database uploads only main admin at the beggining of gaming weekend/period.
+	    /// </remarks>
             /// <param name="listOfMatches">The list of match entities to add.</param>
-            /// <returns>A repository response indicating success or failure with an appropriate message.</returns>
+            /// <returns>A repository response indicating success when added or failure with an appropriate message.</returns>
             Task<RepositoryResponse> AddMatchesAsync(List<Match> listOfMatches);
 
             /// <summary>
-            /// Adds a veto record to the database.
+            /// Adds a <paramref name="vetoToAdd"/> to the database.
             /// </summary>
-            /// <param name="vetoToAdd">The veto entity to add.</param>
+	    /// <remarks>
+            /// The vetoes into database upload all admins at the beggining of the competitions or during them.
+            /// </remarks>
+            /// <param name="vetoToAdd">The veto entity to add including id or referee.</param>
             /// <returns>A repository response indicating success or failure with an appropriate message.</returns>
             Task<RepositoryResponse> AddVeto(Veto vetoToAdd);
 
             /// <summary>
-            /// Adds a transfer record to the database.
+            /// Adds a  <paramref name="transfer"/> record to the database.
             /// </summary>
-            /// <param name="transfer">The transfer entity to add.</param>
+	    /// <remarks>
+            /// The transfers into database are saved automatically based on calculations from RouteByBus/CarPlanner.cs
+	    /// </remarks>
+            /// <param name="transfer">The transfer entity to add including id of referee and matches whose are connected with this transfer.</param>
             /// <returns>A repository response indicating success or failure with an appropriate message.</returns>
             Task<RepositoryResponse> AddTransfer(Transfer transfer);
 
@@ -60,8 +69,11 @@ namespace AdminPart.Data
             Task<RepositoryResult<Models.Match>> GetMatchByIdAsync(string id);
 
             /// <summary>
-            /// Retrieves all matches with referee information.
+            /// Retrieves all matches whose are in the system and will be played in the future.
             /// </summary>
+	    /// <remarks>
+	    /// To every match add also detailed referees informations (name) ,teams,competition,field names for easier visualizing.
+	    /// </remarks>
             /// <param name="nameOfReferees">A dictionary mapping referee IDs to their names.</param>
             /// <returns>A repository result containing a list of match view models if successful, or an error message if the operation fails.</returns>
             Task<RepositoryResult<List<MatchViewModel>>> GetMatchesAsync(Dictionary<int, string> nameOfReferees);
@@ -75,10 +87,13 @@ namespace AdminPart.Data
             /// <returns>A repository result containing a list of match view models if successful, or an error message if the operation fails.</returns>
             Task<RepositoryResult<List<MatchViewModel>>> GetMatchesByDateAsync(Dictionary<int, string> dictNameOfReferees, DateTime startDate, DateTime endDate);
 
-            /// <summary>
-            /// Retrieves all matches without additional view model information.
+	     /// <summary>
+            /// Retrieves all matches whose are in the system and will be played in the future.
             /// </summary>
-            /// <returns>A repository result containing a list of match entities if successful, or an error message if the operation fails.</returns>
+	    /// <remarks>
+            /// Method is similar to GetMatchesAsync() , but it is not used for displaying matches , but rather for extracting the informations about referees of refreshing cache. 		
+	    /// </remarks>
+            /// <returns>A repository result containing a list of matches if successful, or an error message if the operation fails.</returns>
             Task<RepositoryResult<List<Models.Match>>> GetPureMatchesAsync();
 
             /// <summary>
@@ -97,19 +112,25 @@ namespace AdminPart.Data
             /// <summary>
             /// Retrieves all transfers for a specific referee.
             /// </summary>
+	    /// <remarks>
+            /// Used in delegations, or when displaying time schedule of referee.
+            /// </remarks>
             /// <param name="refereeId">The ID of the referee.</param>
             /// <returns>A repository result containing a list of transfer entities if successful, or an error message if the operation fails.</returns>
             Task<RepositoryResult<List<Models.Transfer>>> GetRefereesTransfersAsync(int refereeId);
 
             /// <summary>
-            /// Gets the start date of the game season.
+            /// Gets the start date of the gaming block (f.e weekend).
             /// </summary>
             /// <returns>A repository result containing the start date if successful, or an error message if the operation fails.</returns>
             RepositoryResult<DateOnly> GetStartGameDate();
 
             /// <summary>
-            /// Retrieves all matches for a specific team and competition.
+            /// Retrieves all matches for a specific team and competition, but they must be already labelled as played.
             /// </summary>
+	    /// <remarks>
+            /// Used in checking how many times referee this season refereed this specific team.
+            /// </remarks>
             /// <param name="teamId">The ID of the team.</param>
             /// <param name="competitionId">The ID of the competition.</param>
             /// <returns>A repository result containing a list of match entities if successful, or an error message if the operation fails.</returns>
@@ -118,6 +139,12 @@ namespace AdminPart.Data
             /// <summary>
             /// Searches for teams based on input text.
             /// </summary>
+	    /// <remarks>
+            //  Used in help for admins when adding veto team , we use case-insensitive partial matching.
+            /// </remarks>
+	    /// <example>
+	    ///		GetTeamsByInput("Oko") --> TJ Sokol Cholupice, z.s., FK Loko Vltavín, z.s.
+	    /// </example>
             /// <param name="input">The search text.</param>
             /// <returns>A repository result containing a list of team entities if successful, or an error message if the operation fails.</returns>
             Task<RepositoryResult<List<Models.Team>>> GetTeamsByInput(string input);
@@ -133,6 +160,9 @@ namespace AdminPart.Data
             /// <summary>
             /// Retrieves all transfers occurring within a specific game weekend.
             /// </summary>
+	    /// <remarks>   
+	    /// Used when adding time options to all referees in the start of admin part , we want to limit the number of transfer for only relevant ones , gaming weekend is ussually 3 days , so it is transfers from startDay to startDay+4 days  
+	    /// </remarks>
             /// <param name="startDayOfWeekend">The start date of the weekend.</param>
             /// <returns>A repository result containing a list of transfer entities if successful, or an error message if the operation fails.</returns>
             Task<RepositoryResult<List<Models.Transfer>>> GetTransfersWithinGameWeekend(DateTime startDayOfWeekend);
@@ -144,7 +174,7 @@ namespace AdminPart.Data
             Task<RepositoryResult<List<Field>>> GetFields();
 
             /// <summary>
-            /// Gets an existing field or creates a new one if it doesn't exist.
+            /// Gets an existing field or creates a new one if it doesn't exist, so we can add location to the field.
             /// </summary>
             /// <param name="fieldName">The name of the field.</param>
             /// <returns>A repository result containing the field entity if successful, or an error message if the operation fails.</returns>
@@ -211,6 +241,9 @@ namespace AdminPart.Data
             /// <summary>
             /// Links matches with referees and updates the database.
             /// </summary>
+	    /// <remarks> 
+	    /// Used in proccess of saving played matches to server , we update the matches whose are in the database already                                   
+	    /// </remarks>
             /// <param name="listOfMatches">The list of filled match DTOs.</param>
             /// <param name="refereeDict">A dictionary mapping referee IDs to their internal IDs.</param>
             /// <param name="filePath">The path to the file containing match information.</param>

@@ -5,7 +5,7 @@ using AdminPart.Models;
 namespace AdminPart.Data
 {
     /// <summary>
-    /// Interface for managing referee data in the repository.
+    /// Interface for managing referee data from referee-database in the repository.
     /// </summary>
     public interface IRefereeRepo
     {
