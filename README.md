@@ -73,4 +73,4 @@ The purpose of use is deployment in real proccess of administration, potentially
 - [x] code on gitlab
 
 ## Project status
-_implementation_
+_testing_
