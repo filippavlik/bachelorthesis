@@ -1243,25 +1243,51 @@ $(document).on("change", "#fileInputPlayedMatches", function (event) {
         var formData = new FormData();
         formData.append("file", file);
 	formData.append("user", user);	
-
-        $.ajax({
-            url: "Admin/Match/UploadPlayedMatchesFromFileAsync",
+	
+	$.ajax({
+            url: "Admin/Match/UploadMatchesFromFileAsync",
             type: "POST",
             data: formData,
             contentType: false,
             processData: false,
             success: function (response) {
-                showAlert("Úspěch: " + response,"success");
+		 $.ajax({
+            		url: "Admin/Match/UploadPlayedMatchesFromFileAsync",
+            		type: "POST",
+            		data: formData,
+            		contentType: false,
+            		processData: false,
+            		success: function (response) {
+                		showAlert("Úspěch: " + response,"success");
+            		},
+            		error: function (xhr) {
+                	if (xhr.status === 500) {
+                    		showAlert("Error: " + xhr.responseText, "danger");
+                	} else {
+                    		showAlert("An unexpected error occurred: " + xhr.statusText,"danger");
+                	}
+            	}
+
+        	});
             },
             error: function (xhr) {
                 if (xhr.status === 500) {
-                    showAlert("Error: " + xhr.responseText, "danger");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Chyba',
+                        text: "Error: " + xhr.responseText
+                    });
                 } else {
-                    showAlert("An unexpected error occurred: " + xhr.statusText,"danger");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Neznáma chyba',
+                        text: "An unexpected error occurred: " + xhr.statusText
+                    });
                 }
             }
 
         });
+
     } else {
         showAlert("Prosím vyberte validní excel soubor!", "danger");
     }

@@ -174,8 +174,8 @@ namespace AdminPart.Controllers
                         .Where(match => match.RefereeId == refereeId)
                         .ToList();
 
-                    var locationBefore = _refereeService.GetLocationBeforeMatch(listOfMatches, match.MatchDate.ToDateTime(match.MatchTime)).GetDataOrThrow();
-                    var locationAfter = _refereeService.GetLocationAfterMatch(listOfMatches,match.MatchDate.ToDateTime(match.MatchTime)).GetDataOrThrow();
+                    var locationBefore = _refereeService.GetLocationBeforeMatch(matchesForReferee, match.MatchDate.ToDateTime(match.MatchTime)).GetDataOrThrow();
+                    var locationAfter = _refereeService.GetLocationAfterMatch(matchesForReferee,match.MatchDate.ToDateTime(match.MatchTime)).GetDataOrThrow();
 
                     int kmCalculationBefore = 0;
                     int kmCalculationAfter = 0;
