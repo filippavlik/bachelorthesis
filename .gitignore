@@ -18,6 +18,7 @@ LoginPart/publish/*
 LoginPart/secrets
 LoginPart/secrets/*
 .dockerignore
+.gitignore
 #docs files 
 LoginPart/api
 LoginPart/api/*
