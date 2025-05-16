@@ -1,0 +1,398 @@
+{
+  "source_base_path": "/home/LoginPart/LoginPart",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Controllers.HomeController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Controllers.HomeController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Controllers.HomeController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Data.AppDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Data.AppDbContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Data.AppDbContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Data.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Data",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Identity.EmailSender.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Identity.EmailSender.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Identity.EmailSender",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Identity.IEmailSender.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Identity.IEmailSender.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Identity.IEmailSender",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Identity.IJwtTokenService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Identity.IJwtTokenService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Identity.IJwtTokenService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Identity.JwtTokenService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Identity.JwtTokenService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Identity.JwtTokenService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Identity.SeedRoles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Identity.SeedRoles.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Identity.SeedRoles",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Identity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Identity.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Identity",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Migrations.init.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Migrations.init.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Migrations.init",
+      "Summary": "<p sourcefile=\"api/LoginPart.Migrations.init.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Migrations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Migrations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Migrations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Models.AllowedEmailAddress.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Models.AllowedEmailAddress.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Models.AllowedEmailAddress",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Models.ErrorViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Models.ErrorViewModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Models.ErrorViewModel",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Models.Users.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Models.Users.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Models.Users",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.Models.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.Models",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.ViewModels.ForgotPasswordViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.ViewModels.ForgotPasswordViewModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.ViewModels.ForgotPasswordViewModel",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.ViewModels.LoginViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.ViewModels.LoginViewModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.ViewModels.LoginViewModel",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.ViewModels.RedirectViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.ViewModels.RedirectViewModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.ViewModels.RedirectViewModel",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.ViewModels.RegisterViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.ViewModels.RegisterViewModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.ViewModels.RegisterViewModel",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.ViewModels.ResetPasswordViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.ViewModels.ResetPasswordViewModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.ViewModels.ResetPasswordViewModel",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/LoginPart.ViewModels.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/LoginPart.ViewModels.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "LoginPart.ViewModels",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/UsersApp.Controllers.AccountController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/UsersApp.Controllers.AccountController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "UsersApp.Controllers.AccountController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/UsersApp.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/UsersApp.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "UsersApp.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/YourService.Controllers.EmailReceiver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/YourService.Controllers.EmailReceiver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "YourService.Controllers.EmailReceiver",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/YourService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/YourService.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "YourService.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

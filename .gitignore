@@ -18,3 +18,10 @@ LoginPart/publish/*
 LoginPart/secrets
 LoginPart/secrets/*
 .dockerignore
+#docs files 
+LoginPart/api
+LoginPart/api/*
+LoginPart/docs
+LoginPart/docs/*
+LoginPart/index.md
+LoginPart/toc.yml
