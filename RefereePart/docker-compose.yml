@@ -20,7 +20,7 @@ services:
       - AzureVaultURI
       - JwtIssuer
       - JwtAudience
-
+    user: root
 secrets:
         AzureClientId:
           file: ./secrets/AzureClientId

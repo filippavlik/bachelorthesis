@@ -7,6 +7,10 @@ public partial class Referee
 {
     public int RefereeId { get; set; }
 
+    public string? UserId { get; set; }
+
+    public string? FacrId { get; set; }
+
     public string Name { get; set; } = null!;
 
     public string Surname { get; set; } = null!;
@@ -28,8 +32,6 @@ public partial class Referee
     public bool CarAvailability { get; set; }
 
     public DateTime TimestampChange { get; set; }
-
-    public string UserId { get; set; } = null!;
 
     public virtual ICollection<Excuse> Excuses { get; set; } = new List<Excuse>();
 

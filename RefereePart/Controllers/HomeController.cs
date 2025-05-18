@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RefereePart.Data;
 using RefereePart.Models;
 using RefereePart.Models.ViewModels;
 using System.Text.Json;
@@ -15,9 +14,9 @@ namespace RefereePart.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly DatabaserefereeContext _context;
+    private readonly RefereeDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger, DatabaserefereeContext context)
+    public HomeController(ILogger<HomeController> logger, RefereeDbContext context)
     {
         _logger = logger;
         _context = context;
@@ -63,6 +62,19 @@ public class HomeController : Controller
         		Role = userRole
     		};
 
+		// Trim username for comparison (username is in this case email)
+        	var trimmedUsername = username.Trim();
+        
+        	// Search for a referee with the same email as username (both trimmed)
+        	var referee = _context.Referees.FirstOrDefault(r => r.Email.Trim() == trimmedUsername);
+        
+        	// If referee found and UserId doesn't match, update it
+        	if (referee != null && referee.UserId != userId)
+        	{
+           	 	referee.UserId = userId;
+            		referee.TimestampChange = DateTime.Now;
+            		_context.SaveChanges();
+        	}
     		return View(model);
 	}
 	catch (KeyNotFoundException keyEx)
