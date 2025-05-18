@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using RefereePart.Models;
 
-namespace RefereePart.Data;
+namespace RefereePart.Models;
 
-public partial class DatabaserefereeContext : DbContext
+public partial class RefereeDbContext : DbContext
 {
-    public DatabaserefereeContext()
+    public RefereeDbContext()
     {
     }
 
-    public DatabaserefereeContext(DbContextOptions<DatabaserefereeContext> options)
+    public RefereeDbContext(DbContextOptions<RefereeDbContext> options)
         : base(options)
     {
     }
@@ -24,7 +23,7 @@ public partial class DatabaserefereeContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=172.18.2.4;Database=mydb;Username=RefereePart;Password=yiM3YN8NNQ8kkVj");
+        => optionsBuilder.UseNpgsql("Host=172.18.2.4;Port=5432;Database=mydb;Username=RefereePart;Password=yiM3YN8NNQ8kkVj");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -70,6 +69,9 @@ public partial class DatabaserefereeContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(320)
                 .HasColumnName("email");
+            entity.Property(e => e.FacrId)
+                .HasMaxLength(25)
+                .HasColumnName("facr_id");
             entity.Property(e => e.League).HasColumnName("league");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
