@@ -7,7 +7,6 @@ networks:
     external: true
   shared-emails-network:
     external: true
-
 services:
   admin-application-container:
     container_name: admin-application-container

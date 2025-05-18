@@ -17,6 +17,7 @@ using AdminPart.Services.AdminServices;
 using AdminPart.Models;
 using AdminPart.Hubs;
 using AdminPart.Services.RouteServices;
+using Microsoft.Extensions.FileProviders;
 using Aspose.Cells.Charts;
 // Get access information for AzureKey Vault
 var builder = WebApplication.CreateBuilder(args);
@@ -220,6 +221,5 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 });
-
 // Start the application
 app.Run();
