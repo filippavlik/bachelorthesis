@@ -1,4 +1,3 @@
-using RefereePart.Data;
 using RefereePart.Models;
 using Azure.Identity;
 using Azure.Extensions.AspNetCore.Configuration.Secrets;
@@ -46,7 +45,7 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddHttpContextAccessor();
 
 // Set the db context as PostgreSQL database
-builder.Services.AddDbContext<DatabaserefereeContext>(options =>
+builder.Services.AddDbContext<RefereeDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 var app = builder.Build();
