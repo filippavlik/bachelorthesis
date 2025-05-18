@@ -26,3 +26,13 @@ LoginPart/docs
 LoginPart/docs/*
 LoginPart/index.md
 LoginPart/toc.yml
+.gitignore
+.vs
+.vs/*
+LoginPart/docfx.json
+LoginPart/generate_api_pdf.sh
+LoginPart/pdf_output
+LoginPart/pdf_output/*
+LoginPart/_site/*
+LoginPart/_site
+LoginPart/toc.yml
