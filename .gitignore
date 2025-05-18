@@ -18,7 +18,6 @@ RefereePart/publish/*
 RefereePart/secrets
 RefereePart/secrets/*
 .dockerignore
-.gitignore
 .vs
 .vs/*
 RefereePart/docfx.json
