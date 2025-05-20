@@ -15,3 +15,24 @@ This is a .NET CORE project developed in Visual Studio.
    ```bash
    git clone https://gitlab.fit.cvut.cz/pavlifi3/bachelor-thesis/-/tree/main/AdminPartDevelop
    cd AdminPartDevelop
+
+2. Download create and init scripts 
+   ```bash
+
+3. Set docker containers with docker desktop or command prompt
+   ```bash
+   docker run -d --name database-referee-part \
+   -v /var/lib/docker/volumes/referee:/var/lib/postgresql/data \
+  -e POSTGRES_USER=RefereePart\
+  -e POSTGRES_PASSWORD=refereeTest123\
+  -e POSTGRES_DB=mydb \
+  -v /home/refereeCreate.sql:/docker-entrypoint-initdb.d/refereeCreate.sql\
+  postgres
+
+  docker run -d --name database-admin-part \
+   -v /var/lib/docker/volumes/admin:/var/lib/postgresql/data \
+  -e POSTGRES_USER=AdminPart\
+  -e POSTGRES_PASSWORD=adminTest123\
+  -e POSTGRES_DB=mydb \
+  -v /home/adminCreate.sql:/docker-entrypoint-initdb.d/adminCreate.sql\
+  postgres
