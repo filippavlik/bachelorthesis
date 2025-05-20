@@ -7,15 +7,14 @@ This is a .NET CORE project developed in Visual Studio.
 - [.NET SDK 8](https://dotnet.microsoft.com/en-us/download)
 - [Visual Studio 2022](https://visualstudio.microsoft.com/)
 - file AdminPartDevelop\appsettings.json from administrator containing sensitive informations (apikeys)
-- DOCKER DESKTOP to run postgresql containers 
+- DOCKER DESKTOP or Docker Engine(Linux) to run postgresql containers and PostgreSQL image 
 
 ## How to Run
 
 1. Clone the repository:
    ```bash
    git clone https://gitlab.fit.cvut.cz/pavlifi3/bachelor-thesis/-/tree/main/AdminPartDevelop
-   cd AdminPartDevelop
-
+   
 2. Download create and init scripts 
    ```bash
    Move or download file from source folder adminCreate.sql to home or Desktop(you need to change docker run)
@@ -41,3 +40,5 @@ This is a .NET CORE project developed in Visual Studio.
    -e POSTGRES_PASSWORD=adminTest123\
    -e POSTGRES_DB=mydb \
    postgres
+4. Copy AdminPartDevelop\appsettings.json to project and open AdminPartDevelop.sln in Visual Studio 2022
+   run the project
