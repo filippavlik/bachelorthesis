@@ -18,6 +18,9 @@ This is a .NET CORE project developed in Visual Studio.
 
 2. Download create and init scripts 
    ```bash
+   Move or download file from source folder adminCreate.sql to home or Desktop(you need to change docker run)
+   Move or download file from source folder refereeCreate.sql to home or Desktop(you need to change docker run)
+   Move or download file from source folder initCompetitions.sql to home or Desktop(you need to change docker run)
 
 3. Set docker containers with docker desktop or command prompt
    ```bash
