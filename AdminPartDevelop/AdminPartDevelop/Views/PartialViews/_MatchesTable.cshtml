@@ -1,0 +1,173 @@
+﻿﻿@* Match Panel Partial View *@
+@using AdminPart.Views.ViewModels
+@model List<MatchViewModel>
+<head>
+    <script src="~/js/Custom/ColorConnectedMatches.js"></script>
+</head>
+<style>
+    .vertical-label {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 5px;
+    }
+
+    .rectangleMatch {
+        width: 15px;
+        height: 120px;
+    }
+</style>
+<ul class="list-group" style="height:45vh; overflow-y:auto;">
+    @foreach (var match in Model)
+    {
+        <li id="list_matches" class="list-group-item p-1" style="height:120px;width:160%">
+            <div class="match_pane d-flex" id="match_pane_@match.Match.MatchId" style="background-color: #32cd32; height:120px;" data-id="@match.Match.MatchId">
+                <div class="rectangleMatch" style="@((match.Match.AlreadyPlayed) ? $"background-color:black;" : "") width:10px;"></div>
+                <div id="match_div_prematch" class="vertical-label" style="font-size:12px;">
+                    <input id="match_input_prematch_@match.Match.MatchId" style="height:120px;text-align:center;font-size:12px; cursor:pointer;" type="text" class="linkInput" value="@match.Match.PreMatch" />
+                </div>
+
+                <div class="vertical-label" style="font-size:14px;">@match.Match.MatchId</div>
+                <div class="rectangleMatch" style="@((match.WeekendPartColor == null) ? "" : $"background-color:{match.WeekendPartColor}")"></div>
+                <div class="p-4 text-center" style="width:260px;">
+                    <div style="font-family:Arial;width:245px; font-size:18px;">@match.HomeTeamName</div>
+                    <div class="home-team-id" style="font-family:Arial; font-size:10px;">@match.Match.HomeTeamId</div>
+                </div>
+
+                <div class="p-3 text-center" style="width:107px;">
+                    <div style="font-family:Arial; font-size:28px;">@match.Match.MatchTime</div>
+                    <div style="font-family:Arial; font-size:16px;"> @match.Match.MatchDate.ToString("dd.MM.yy")</div>
+                </div>
+
+                <div class="p-4 text-center" style="width:260px;">
+                    <div style="font-family:Arial;width:245px; font-size:18px;">@match.AwayTeamName</div>
+                    <div class="away-team-id" style="font-family:Arial; font-size:10px;">@match.Match.AwayTeamId</div>
+                </div>
+
+                <div class="p-3 text-center" style="width:150px;">
+                    <div style="font-family:Arial;width:130px;font-size:18px;">@match.FieldName</div>
+                </div>
+
+                <!-- Delegation Pane -->
+                <div class="p-2 justify-content-center" style=" height:100px;width:400px;">
+                    <div class="d-flex justify-content-start">
+
+                        <div class="position-relative mx-2" style="cursor: pointer; width:117px; height:38px; background:white;border:2px solid black;">
+                            <div id="referee_delegation_pane_@match.Match.MatchId" class="referee-place" style="cursor: pointer;position:absolute; width:24px; height:35px; background:#87b18e; text-align:center; line-height:37px; font-weight:bold;font-size:10px;" data-role="0" data-id="@match.Match.MatchId">R</div>
+                            @if (match.RefereeName != null)
+                            {
+                                <button class="btn btn-secondary referee-button" data-id="@match.Match.RefereeId"
+                                        style="position: absolute;height:25px;width:80px;padding:0;display:flex;align-items: center;justify-content: center;flex-direction: row;margin-left: 30px;margin-top: 5px;">
+                                    <strong>@match.RefereeName</strong>
+                                </button>
+                            }
+                        </div>
+                        <div class="position-relative mx-2" style="width:118px; height:38px; background:white;border:2px solid black;">
+                            <div id="ar1_delegation_pane_@match.Match.MatchId" class="referee-place" style="cursor: pointer;position:absolute; width:28px; height:35px; background:#87b18e; left:0; text-align:center; line-height:37px; font-weight:bold;font-size:10px;" data-role="1" data-id="@match.Match.MatchId">
+                                AR1
+                            </div>
+                            @if (match.Ar1Name != null)
+                            {
+                                <button class="btn btn-secondary referee-button" data-id="@match.Match.Ar1Id"
+                                        style="position: absolute;height:25px;width:80px;padding:0;display:flex;align-items: center;justify-content: center;flex-direction: row;margin-left: 30px;margin-top: 5px;">
+                                    <strong>@match.Ar1Name</strong>
+                                </button>
+                            }
+                        </div>
+                        <div class="position-relative mx-2" style="width:117px; height:38px; background:white;border:2px solid black;">
+                            <div id="ar2_delegation_pane_@match.Match.MatchId" class="referee-place" style="cursor: pointer;position:absolute; width:28px; height:35px; background:#87b18e; left:0; text-align:center; line-height:37px; font-weight:bold;font-size:10px;" data-role="2" data-id="@match.Match.MatchId">AR2</div>
+                            @if (match.Ar2Name != null)
+                            {
+                                <button class="btn btn-secondary referee-button" data-id="@match.Match.Ar2Id"
+                                        style="position: absolute;height:25px;width:80px;padding:0;display:flex;align-items: center;justify-content: center;flex-direction: row;margin-left: 30px;margin-top: 5px;">
+                                    <strong>@match.Ar2Name</strong>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-1">
+                        <div style="width:310px;">
+                            @{
+                                var competitionName = @match.CompetitionName;
+                                var index = competitionName.IndexOf("&");
+                                if (index >= 0)
+                                {
+                                    @competitionName.Substring(index + 1)
+                                }
+                                else
+                                {
+                                    @competitionName
+                                }
+                            }
+                        </div>
+                        <div class="competition_id" style="width:285px;text-align:right">@match.Match.CompetitionId</div>
+                    </div>
+                </div>
+
+                <div class="btn-group-vertical justify-content-around p-2">
+                    <div class="btn-group" role="group">
+                        <div class="btn-group-vertical">
+                            <button class="match-referee-counter btn btn-sm" data-id="@match.Match.MatchId" data-home="true" data-referee="true" style="height:19px; width:26px; font-size:9px;background:#87b18e; color:black;">HR</button>
+                            <button class="match-referee-counter btn btn-sm" data-id="@match.Match.MatchId" data-home="true" data-referee="false" style="height:19px; width:26px; font-size:9px;background:#87b18e; color:black;">AR</button>
+                        </div>
+                        <div class="btn-group-vertical">
+                            <button class="match-referee-counter btn btn-sm" data-id="@match.Match.MatchId" data-home="false" data-referee="true" style="height:25px; width: 26px; font-size:7px;background:#87b18e; color:black;">HR h</button>
+                            <button class="match-referee-counter btn btn-sm" data-id="@match.Match.MatchId" data-home="false" data-referee="false" style="height:25px; width:26px; font-size:7px;background:#87b18e; color:black;">AR h</button>
+                        </div>
+                    </div>
+                    <button id="enclose_match_button_@match.Match.MatchId" data-id="@match.Match.MatchId" class=" btn btn-sm mt-1 enclose-match-button" style="height:19px; width:52px; font-size:9px;background:#87b18e;color:black;">Odehrát</button>
+                    <button id="lock_button_@match.Match.MatchId" data-id="@match.Match.MatchId" class=" btn btn-sm mt-1 lock-button" style="height:19px; width:52px; font-size:9px;background:#87b18e;color:black;">Zamknout</button>
+
+                </div>
+                <div class="btn-group-vertical justify-content-around pt-2 pb-2">
+                    <button id="points_button_r_@match.Match.MatchId" data-id="@match.Match.MatchId" data-referee="true" class=" btn btn-sm points_button_r" style="height:10px; width:40px; font-size:9px;background:#87b18e;color:black;">Body R</button>
+                    <button id="points_button_ar_@match.Match.MatchId" data-id="@match.Match.MatchId" data-referee="false" class=" btn btn-sm points_button_ar" style="height:10px; width:40px; font-size:9px;background:#87b18e;color:black;">Body AR</button>
+                    <button id="save_button_@match.Match.MatchId" data-id="@match.Match.MatchId" class=" btn btn-sm mt-1 save-match-button" style="height:19px; width:40px; font-size:9px;background:#87b18e;color:black;">Uložit</button>
+                </div>
+
+                <div id="match_div_postmatch" class="vertical-label" style="font-size:12px;">
+                    <input id="match_input_postmatch_@match.Match.MatchId" style="height:120px;text-align:center;font-size:12px; cursor:pointer;" type="text" class="linkInput" value="@match.Match.PostMatch" />
+                </div>
+
+                <div class="p-4 text-center" style="width:260px;">
+                    <div id="last_changed_by_@match.Match.MatchId" style="font-family:Arial;width:245px; font-size:18px;">@match.Match.LastChangedBy</div>
+                    <div id="last_changed_@match.Match.MatchId" style="font-family:Arial; font-size:10px;">
+                        @match.Match.LastChanged.ToString("dd/MM HH:mm:ss")
+                    </div>
+                </div>
+
+            </div>
+        </li>
+    }
+</ul>
+<script>
+    $(document).ready(function() {
+    @foreach (var lockedMatch in Model.Where(m => m.Match.Locked || m.Match.AlreadyPlayed))
+    {
+        <text>
+                                $("#match_pane_@lockedMatch.Match.MatchId").find("input, select, button, textarea").not(".lock-button").prop("disabled", true);
+                                $("#match_pane_@lockedMatch.Match.MatchId").addClass("disabled-pane");
+        </text>
+    }
+            $("#matchesShowedCount").text(@Model.Count);
+            $('.linkInput').on('dblclick', function () {
+                    const targetId = $(this).val();
+                    const hash = '#match_pane_' + targetId;
+                    const targetElement = $(hash);
+
+                    if (targetElement.length) {
+                        if (targetElement.is(':hidden')) {
+                            targetElement.closest('.tab-pane, .content-pane, .panel').show();
+                        }
+
+                        targetElement[0].scrollIntoView({ behavior: 'smooth' });
+
+                        window.location.href = hash;
+                    }
+            });
+
+    });
+</script>
