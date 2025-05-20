@@ -6,7 +6,7 @@ This is a .NET CORE project developed in Visual Studio.
 
 - [.NET SDK 8](https://dotnet.microsoft.com/en-us/download)
 - [Visual Studio 2022](https://visualstudio.microsoft.com/)
-- file AdminPartDevelop\appsettings.json from administrator containing sensitive informations
+- file AdminPartDevelop\appsettings.json from administrator containing sensitive informations (apikeys)
 - DOCKER DESKTOP to run postgresql containers 
 
 ## How to Run
