@@ -34,8 +34,10 @@ This is a .NET CORE project developed in Visual Studio.
 
    docker run -d --name database-admin-part \
       -v /var/lib/docker/volumes/admin:/var/lib/postgresql/data \
+      -v /home/adminCreate.sql:/docker-entrypoint-initdb.d/adminCreate.sql\
+      -v /home/initCompetitions.sql:/docker-entrypoint-initdb.d/02-initCompetitions.sql \
+
    -e POSTGRES_USER=AdminPart\
    -e POSTGRES_PASSWORD=adminTest123\
    -e POSTGRES_DB=mydb \
-   -v /home/adminCreate.sql:/docker-entrypoint-initdb.d/adminCreate.sql\
    postgres
