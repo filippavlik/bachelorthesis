@@ -1,4 +1,4 @@
-# My Visual Studio Project
+# Development version of AdminSide
 
 This is a .NET CORE project developed in Visual Studio.
 
