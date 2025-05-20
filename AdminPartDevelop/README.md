@@ -23,16 +23,16 @@ This is a .NET CORE project developed in Visual Studio.
    ```bash
    docker run -d --name database-referee-part \
    -v /var/lib/docker/volumes/referee:/var/lib/postgresql/data \
-  -e POSTGRES_USER=RefereePart\
-  -e POSTGRES_PASSWORD=refereeTest123\
-  -e POSTGRES_DB=mydb \
-  -v /home/refereeCreate.sql:/docker-entrypoint-initdb.d/refereeCreate.sql\
-  postgres
+   -e POSTGRES_USER=RefereePart\
+   -e POSTGRES_PASSWORD=refereeTest123\
+   -e POSTGRES_DB=mydb \
+   -v /home/refereeCreate.sql:/docker-entrypoint-initdb.d/refereeCreate.sql\
+   postgres
 
-  docker run -d --name database-admin-part \
-   -v /var/lib/docker/volumes/admin:/var/lib/postgresql/data \
-  -e POSTGRES_USER=AdminPart\
-  -e POSTGRES_PASSWORD=adminTest123\
-  -e POSTGRES_DB=mydb \
-  -v /home/adminCreate.sql:/docker-entrypoint-initdb.d/adminCreate.sql\
-  postgres
+   docker run -d --name database-admin-part \
+      -v /var/lib/docker/volumes/admin:/var/lib/postgresql/data \
+   -e POSTGRES_USER=AdminPart\
+   -e POSTGRES_PASSWORD=adminTest123\
+   -e POSTGRES_DB=mydb \
+   -v /home/adminCreate.sql:/docker-entrypoint-initdb.d/adminCreate.sql\
+   postgres
