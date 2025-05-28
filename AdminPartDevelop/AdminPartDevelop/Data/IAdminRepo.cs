@@ -1,10 +1,10 @@
-﻿using AdminPart.Common;
-using AdminPart.DTOs;
-using AdminPart.Models;
-using AdminPart.Views.ViewModels;
+﻿using AdminPartDevelop.Common;
+using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Views.ViewModels;
 using System.Security.Cryptography;
 
-namespace AdminPart.Data
+namespace AdminPartDevelop.Data
 {
     /// <summary>
     /// Interface for managing data within admin-database in the repository.

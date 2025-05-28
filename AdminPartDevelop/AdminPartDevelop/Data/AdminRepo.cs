@@ -1,7 +1,7 @@
-﻿using AdminPart.Common;
-using AdminPart.DTOs;
-using AdminPart.Models;
-using AdminPart.Views.ViewModels;
+﻿using AdminPartDevelop.Common;
+using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Views.ViewModels;
 using Aspose.Cells;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +12,10 @@ using System;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-using static AdminPart.Services.RefereeServices.RefereeService;
+using static AdminPartDevelop.Services.RefereeServices.RefereeService;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace AdminPart.Data
+namespace AdminPartDevelop.Data
 {
     public class AdminRepo : IAdminRepo
     {

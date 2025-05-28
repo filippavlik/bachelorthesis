@@ -1,9 +1,10 @@
-﻿using AdminPart.Common;
-using AdminPart.Data;
-using AdminPart.DTOs;
-using AdminPart.Models;
-using AdminPart.Services.RefereeServices;
-using AdminPart.Views.ViewModels;
+﻿using AdminPartDevelop.Common;
+using AdminPartDevelop.Data;
+using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Services.RefereeServices;
+using AdminPartDevelop.Views.ViewModels;
+using AdminPartDevelop.Services.AdminServices;
 using Aspose.Cells.Charts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +17,9 @@ using System.Globalization;
 using System.IO;
 using System.Security.Cryptography.Xml;
 using System.Text.RegularExpressions;
-using static AdminPart.Views.ViewModels.RefereeWithTimeOptions;
+using static AdminPartDevelop.Views.ViewModels.RefereeWithTimeOptions;
 
-namespace AdminPart.Services.AdminServices
+namespace AdminPartDevelop.Services.AdminServices
 {
     public class AdminService : IAdminService
     {
@@ -62,6 +63,10 @@ namespace AdminPart.Services.AdminServices
                 List<Models.Match> resultList = new List<Models.Match>();
                 foreach (var matchDto in listOfMatches)
                 {
+                    if (String.IsNullOrEmpty(matchDto.NumberMatch))
+                    {
+                        continue;
+                    }
                     // The competition code is extracted from the first 10 characters of NumberMatch
                     string competitionCode = !string.IsNullOrEmpty(matchDto.NumberMatch) && matchDto.NumberMatch.Length >= 10
                                 ? matchDto.NumberMatch.Substring(0, 10)

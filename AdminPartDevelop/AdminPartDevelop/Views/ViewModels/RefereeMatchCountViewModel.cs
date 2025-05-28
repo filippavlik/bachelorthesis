@@ -1,4 +1,4 @@
-﻿namespace AdminPart.Views.ViewModels
+﻿namespace AdminPartDevelop.Views.ViewModels
 {
     public class RefereeMatchCountViewModel
     {        

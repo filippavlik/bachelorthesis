@@ -1,9 +1,9 @@
-﻿using AdminPart.DTOs;
+﻿using AdminPartDevelop.DTOs;
 using Aspose.Cells;
-using AdminPart.Common;
-using AdminPart.Models;
+using AdminPartDevelop.Common;
+using AdminPartDevelop.Models;
 
-namespace AdminPart.Services.FileParsers
+namespace AdminPartDevelop.Services.FileParsers
 {
     public class GetData : IExcelParser
     {

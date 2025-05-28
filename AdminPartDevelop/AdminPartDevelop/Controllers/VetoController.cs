@@ -1,8 +1,8 @@
-﻿using AdminPart.DTOs;
-using AdminPart.Hubs;
-using AdminPart.Models;
-using AdminPart.Services.FileParsers;
-using AdminPart.Views.ViewModels;
+﻿using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Hubs;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Services.FileParsers;
+using AdminPartDevelop.Views.ViewModels;
 using Aspose.Cells;
 using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +12,7 @@ using System.Device.Location;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AdminPart.Controllers
+namespace AdminPartDevelop.Controllers
 {
     [Route("Admin/Veto")]
     public class VetoController : Controller

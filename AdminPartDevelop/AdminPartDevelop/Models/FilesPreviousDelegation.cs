@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AdminPart.Models;
+namespace AdminPartDevelop.Models;
 
 public partial class FilesPreviousDelegation
 {

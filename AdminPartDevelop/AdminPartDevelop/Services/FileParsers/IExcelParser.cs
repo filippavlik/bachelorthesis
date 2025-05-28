@@ -1,10 +1,10 @@
-﻿using AdminPart.Common;
-using AdminPart.DTOs;
-using AdminPart.Models;
+﻿using AdminPartDevelop.Common;
+using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Models;
 using Aspose.Cells;
 using Microsoft.Maui.Storage;
 
-namespace AdminPart.Services.FileParsers
+namespace AdminPartDevelop.Services.FileParsers
 {
     public interface IExcelParser
     {

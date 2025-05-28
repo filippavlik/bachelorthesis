@@ -1,8 +1,9 @@
-﻿using AdminPart.DTOs;
-using AdminPart.Hubs;
-using AdminPart.Models;
-using AdminPart.Services.FileParsers;
-using AdminPart.Views.ViewModels;
+﻿using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Hubs;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Services.FileParsers;
+using AdminPartDevelop.Views.ViewModels;
+using AdminPartDevelop.Services.AdminServices;
 using Aspose.Cells;
 using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,10 @@ using Microsoft.Extensions.FileSystemGlobbing;
 using System.Device.Location;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AdminPartDevelop.Data;
+using AdminPartDevelop.Services.RefereeServices;
 
-namespace AdminPart.Controllers
+namespace AdminPartDevelop.Controllers
 {
     [Route("Admin/Match")]
     public class MatchController : Controller
@@ -21,14 +24,24 @@ namespace AdminPart.Controllers
         private readonly Services.FileParsers.IExcelParser _excelParser;
         private readonly Services.FileParsers.IExcelExporter _excelExporter;
         private readonly Services.RefereeServices.IRefereeService _refereeService;
-        private readonly Services.AdminServices.IAdminService _adminService;
+        private readonly IAdminService _adminService;
 
         private readonly Data.IRefereeRepo _refereeRepo;
         private readonly Data.IAdminRepo _adminRepo;
 
         private readonly IHubContext<HubForReendering> _hubContext;
 
-        public MatchController(Data.IRefereeRepo refereeRepo, Data.IAdminRepo adminRepo, Services.FileParsers.IExcelParser excelParser, Services.FileParsers.IExcelExporter excelExporter, Services.RefereeServices.IRefereeService refereeService, Services.AdminServices.IAdminService adminService, IHubContext<HubForReendering> hubContext, ILogger<MatchController> logger)
+        public RefereeRepo RefereeRepo { get; }
+        public AdminRepo AdminRepo { get; }
+        public IExcelParser ExcelParser { get; }
+        public IExcelExporter ExcelExporter { get; }
+        public IRefereeService RefereeService { get; }
+        public IAdminService AdminService { get; }
+        public IHubContext<HubForReendering> Object1 { get; }
+        public object Value { get; }
+        public ILogger<MatchController> Object2 { get; }
+
+        public MatchController(Data.IRefereeRepo refereeRepo, Data.IAdminRepo adminRepo, Services.FileParsers.IExcelParser excelParser, Services.FileParsers.IExcelExporter excelExporter, Services.RefereeServices.IRefereeService refereeService, IAdminService adminService, IHubContext<HubForReendering> hubContext, ILogger<MatchController> logger)
         {
             _logger = logger;
             _excelParser = excelParser;
@@ -39,6 +52,7 @@ namespace AdminPart.Controllers
             _adminRepo = adminRepo;
             _hubContext = hubContext;
         }
+
         [HttpPost("GetRefereeMatchCounts")]
         public async Task<IActionResult> GetRefereeMatchCounts([FromBody] RefereeMatchCountViewModel request)
         {
@@ -457,7 +471,7 @@ namespace AdminPart.Controllers
 
                 if (responseOfTransaction.Success)
                 {
-                    TempData["SuccessMessage"] = "Spájení úspěšně provedeno!";
+                    //TempData["SuccessMessage"] = "Spájení úspěšně provedeno!";
                     return PartialView("~/Views/PartialViews/_MatchesTable.cshtml", listOfMatchesWithConnections);
                 }
                 else

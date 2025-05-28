@@ -1,6 +1,6 @@
-﻿using AdminPart.Models;
+﻿using AdminPartDevelop.Models;
 
-namespace AdminPart.DTOs
+namespace AdminPartDevelop.DTOs
 {
     public class FilledMatchDto
     {

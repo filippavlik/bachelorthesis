@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNet.SignalR;
-using AdminPart.Views.ViewModels;
+using AdminPartDevelop.Views.ViewModels;
 using Microsoft.AspNetCore.SignalR;
 
-namespace AdminPart.Hubs
+namespace AdminPartDevelop.Hubs
 {
     /// <summary>
     /// Hub responsible for real-time updates across clients when match or referee data changes.

@@ -1,4 +1,4 @@
-﻿namespace AdminPart.Common
+﻿namespace AdminPartDevelop.Common
 {
     public class ServiceResult<T>
     {
