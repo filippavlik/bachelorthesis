@@ -15,7 +15,7 @@ This is a .NET CORE project developed in Visual Studio.
    ```bash
    git clone https://gitlab.fit.cvut.cz/pavlifi3/bachelor-thesis/-/tree/main/AdminPartDevelop
    cd AdminPartDevelop
-
+   
 2. Download create and init scripts 
    ```bash
    Move or download file from source folder adminCreate.sql to home or Desktop(you need to change docker run)
@@ -41,3 +41,5 @@ This is a .NET CORE project developed in Visual Studio.
    -e POSTGRES_PASSWORD=adminTest123\
    -e POSTGRES_DB=mydb \
    postgres
+4. Copy AdminPartDevelop\appsettings.json to project and open AdminPartDevelop.sln in Visual Studio 2022
+   run the project

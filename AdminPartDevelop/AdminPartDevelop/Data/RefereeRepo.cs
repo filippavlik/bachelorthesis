@@ -38,6 +38,7 @@ namespace AdminPartDevelop.Data
                 {
                     _context.Referees.Add(referee);
                     await _context.SaveChangesAsync();
+
                     return new RepositoryResponse
                     {
                         Success = true,

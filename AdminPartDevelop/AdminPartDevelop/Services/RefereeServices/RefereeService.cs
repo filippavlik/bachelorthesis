@@ -239,6 +239,7 @@ namespace AdminPartDevelop.Services.RefereeServices
                     DateTime matchEnd = officialMatchStart.AddMinutes((match.Match.Competition.MatchLength * 2) + 15 + reserveAfterMatches);
                     var timeFlags = GetMatchTimeFlags(matchStart, firstGameDay, saturdayStart, saturdayNoon, sundayStart, sundayNoon, sundayEnd);
 
+                    RefereeWithTimeOptions.TimeRange timeRange = new RefereeWithTimeOptions.TimeRange(matchStart, matchEnd, "zapas", matchId: match.Match.MatchId);
                     // Differentiate between main referee ("zapasref") and assistants ("zapasar")
                     // to allow finer filtering later.
                     if (match.Match.RefereeId.HasValue && refereeDict.TryGetValue(match.Match.RefereeId.Value, out RefereeWithTimeOptions mainRefTimeOptions))
@@ -300,6 +301,7 @@ namespace AdminPartDevelop.Services.RefereeServices
                                 }
                                 //}
                             //}
+                            }
                         }
                     }
                 }
