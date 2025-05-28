@@ -1,9 +1,9 @@
-﻿using AdminPart.Common;
-using AdminPart.DTOs;
-using AdminPart.Models;
-using AdminPart.Views.ViewModels;
+﻿using AdminPartDevelop.Common;
+using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Views.ViewModels;
 
-namespace AdminPart.Services.AdminServices
+namespace AdminPartDevelop.Services.AdminServices
 {
     public interface IAdminService
     {

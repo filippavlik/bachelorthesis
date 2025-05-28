@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AdminPart.DTOs
+namespace AdminPartDevelop.DTOs
 {
     public class RefereeAddRequest : IRefereeDto
     {

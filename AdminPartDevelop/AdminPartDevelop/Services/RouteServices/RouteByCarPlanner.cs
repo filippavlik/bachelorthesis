@@ -1,14 +1,14 @@
-﻿using AdminPart.Common;
+﻿using AdminPartDevelop.Common;
 using System.Globalization;
 using System.Text.Json;
 
-namespace AdminPart.Services.RouteServices
+namespace AdminPartDevelop.Services.RouteServices
 {
     /// <summary>
     /// Implements the IRoutePlanner interface to calculate routes using car transportation
     /// via the Mapy.cz routing API.
     /// </summary>
-    public class RouteByCarPlanner : IRoutePlanner
+    public class RouteByCarPlanner : IRouteCarPlanner
     {
         private readonly ILogger<RouteByCarPlanner> _logger;    
         private readonly HttpClient _httpClient;                // HTTP client for making API requests

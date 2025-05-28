@@ -9,16 +9,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using AdminPart.Data;
-using AdminPart.Services.FileParsers;
-using AdminPart.Services.RefereeServices;
-using AdminPart.Services.EmailsSender;
+using AdminPartDevelop.Data;
+using AdminPartDevelop.Services.FileParsers;
+using AdminPartDevelop.Services.RefereeServices;
+using AdminPartDevelop.Services.EmailsSender;
 using Microsoft.Extensions.FileProviders;
-using AdminPart.Services.AdminServices;
-using AdminPart.Models;
-using AdminPart.Hubs;
-using AdminPart.Services.RouteServices;
+using AdminPartDevelop.Services.AdminServices;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Hubs;
+using AdminPartDevelop.Services.RouteServices;
 using Aspose.Cells.Charts;
+using AdminPartDevelop.Services.AdminServices;
 //TOP LEVEL STATEMENTS
 // Get access information for AzureKey Vault
 var builder = WebApplication.CreateBuilder(args);
@@ -89,7 +90,7 @@ builder.Services.AddHttpClient("MapyClient", client =>
 
 // Register route planning services as singletons (long-lived instances)
 // Car route planning service
-builder.Services.AddSingleton<RouteByCarPlanner>(sp =>
+builder.Services.AddSingleton<IRouteCarPlanner,RouteByCarPlanner>(sp =>
    new RouteByCarPlanner(
        sp.GetRequiredService<ILogger<RouteByCarPlanner>>(),
        sp.GetRequiredService<IHttpClientFactory>(),
@@ -98,7 +99,7 @@ builder.Services.AddSingleton<RouteByCarPlanner>(sp =>
 );
 
 // Bus route planning service
-builder.Services.AddSingleton<RouteByBusPlanner>(sp =>
+builder.Services.AddSingleton<IRouteBusPlanner,RouteByBusPlanner>(sp =>
    new RouteByBusPlanner(
        sp.GetRequiredService<ILogger<RouteByBusPlanner>>(),
        sp.GetRequiredService<IHttpClientFactory>(),
@@ -113,7 +114,7 @@ builder.Services.AddScoped<IRefereeService, RefereeService>(); // Business logic
 builder.Services.AddScoped<IAdminService, AdminService>();     // Business logic for admins
 builder.Services.AddScoped<IRefereeRepo, RefereeRepo>();       // Data access for referees
 builder.Services.AddScoped<IAdminRepo, AdminRepo>();           // Data access for admins
-builder.Services.AddScoped<EmailsToLoginDbSender>();       //Email sender to login database
+builder.Services.AddScoped<IEmailsToLoginDbSender,EmailsToLoginDbSender>();       //Email sender to login database
 
 // Add memory caching for performance optimization
 builder.Services.AddMemoryCache();

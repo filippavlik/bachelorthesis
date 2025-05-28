@@ -1,11 +1,11 @@
-﻿using AdminPart.Common;
+﻿using AdminPartDevelop.Common;
 using System.Globalization;
 using System.Text.Json;
 using System.Text;
 
-namespace AdminPart.Services.EmailsSender
+namespace AdminPartDevelop.Services.EmailsSender
 {
-    public class EmailsToLoginDbSender
+    public class EmailsToLoginDbSender : IEmailsToLoginDbSender
     {
         private readonly ILogger<EmailsToLoginDbSender> _logger;
         private readonly HttpClient _httpClient;

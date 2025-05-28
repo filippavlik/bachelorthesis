@@ -1,4 +1,4 @@
-﻿namespace AdminPart.DTOs
+﻿namespace AdminPartDevelop.DTOs
 {
     public class FilledFieldDto
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 
-namespace AdminPart.Models;
+namespace AdminPartDevelop.Models;
 
 public partial class Team
 {

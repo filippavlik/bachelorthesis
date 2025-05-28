@@ -1,16 +1,16 @@
-﻿using AdminPart.Common;
-using AdminPart.DTOs;
-using AdminPart.Models;
-using AdminPart.Services.FileParsers;
-using AdminPart.Views.ViewModels;
+﻿using AdminPartDevelop.Common;
+using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Services.FileParsers;
+using AdminPartDevelop.Views.ViewModels;
 using Aspose.Cells.Drawing.Equations;
 using Microsoft.Maui.ApplicationModel;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using static AdminPart.Services.RefereeServices.RefereeService;
-using static AdminPart.Views.ViewModels.RefereeWithTimeOptions;
+using static AdminPartDevelop.Services.RefereeServices.RefereeService;
+using static AdminPartDevelop.Views.ViewModels.RefereeWithTimeOptions;
 
-namespace AdminPart.Services.RefereeServices
+namespace AdminPartDevelop.Services.RefereeServices
 {
     public class RefereeService : IRefereeService
     {
@@ -244,21 +244,24 @@ namespace AdminPart.Services.RefereeServices
                     // to allow finer filtering later.
                     if (match.Match.RefereeId.HasValue && refereeDict.TryGetValue(match.Match.RefereeId.Value, out RefereeWithTimeOptions mainRefTimeOptions))
                     {
-                        timeRange.RangeType = "zapasref";
+                        Console.WriteLine("Adding zapasref " + match.Match.MatchId + " to referee " + mainRefTimeOptions.Referee.RefereeId);
+                        RefereeWithTimeOptions.TimeRange timeRange = new RefereeWithTimeOptions.TimeRange(matchStart, matchEnd, "zapasref", matchId: match.Match.MatchId);
                         mainRefTimeOptions.SortedRanges.Add(timeRange);
                         SetTimeFlags(timeFlags, mainRefTimeOptions);
                     }
 
                     if (match.Match.Ar1Id.HasValue && refereeDict.TryGetValue(match.Match.Ar1Id.Value, out RefereeWithTimeOptions ar1TimeOptions))
                     {
-                        timeRange.RangeType = "zapasar";
+                        Console.WriteLine("Adding zapasar " + match.Match.MatchId + " to referee " + ar1TimeOptions.Referee.RefereeId);
+                        RefereeWithTimeOptions.TimeRange timeRange = new RefereeWithTimeOptions.TimeRange(matchStart, matchEnd, "zapasar", matchId: match.Match.MatchId);
                         ar1TimeOptions.SortedRanges.Add(timeRange);
                         SetTimeFlags(timeFlags, ar1TimeOptions);
                     }
 
                     if (match.Match.Ar2Id.HasValue && refereeDict.TryGetValue(match.Match.Ar2Id.Value, out RefereeWithTimeOptions ar2TimeOptions))
                     {
-                        timeRange.RangeType = "zapasar";
+                        Console.WriteLine("Adding zapasar " + match.Match.MatchId + " to referee " + ar2TimeOptions.Referee.RefereeId);
+                        RefereeWithTimeOptions.TimeRange timeRange = new RefereeWithTimeOptions.TimeRange(matchStart, matchEnd, "zapasar", matchId: match.Match.MatchId);
                         ar2TimeOptions.SortedRanges.Add(timeRange);
                         SetTimeFlags(timeFlags, ar2TimeOptions);
                     }
@@ -278,8 +281,8 @@ namespace AdminPart.Services.RefereeServices
                             var timeFlags = GetExcuseTimeFlags(excuseStart, excuseEnd, firstGameDay, saturdayStart, saturdayNoon, sundayStart, sundayNoon, sundayEnd);
 
                             //check if it is the ongoing excuse or start is in two weeks
-                            if ((excuseStart >= now && excuseStart <= twoWeeksFromNow) || (excuseStart <= now && excuseEnd >= now))
-                            {
+                            /*if ((excuseStart >= now && excuseStart <= twoWeeksFromNow) || (excuseStart <= now && excuseEnd >= now))
+                            {*/
 
                                 //check if it is the ongoing excuse or start is in two weeks production
                                 /*if ((excuseStart >= now && excuseStart <= twoWeeksFromNow) || (excuseStart <= now && excuseEnd >= now))
@@ -297,6 +300,7 @@ namespace AdminPart.Services.RefereeServices
                                     SetTimeFlags(timeFlags, refTimeOptions);
                                 }
                                 //}
+                            //}
                             }
                         }
                     }

@@ -3,16 +3,18 @@ using System.Globalization;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using AdminPart.Common;
+using AdminPartDevelop.Common;
+using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Nest;
 
-namespace AdminPart.Services.RouteServices
+namespace AdminPartDevelop.Services.RouteServices
 {
     /// <summary>
     /// Implements the IRoutePlanner interface to calculate routes using public transportation
     /// via the Google Maps Directions API.
     /// </summary>
-    public class RouteByBusPlanner : IRoutePlanner
+    public class RouteByBusPlanner : IRouteBusPlanner
     {
         private readonly ILogger<RouteByBusPlanner> _logger;        
         private readonly HttpClient _httpClient;                    // HTTP client for making API requests (managed by HttpClientFactory)
@@ -35,6 +37,7 @@ namespace AdminPart.Services.RouteServices
             _logger = logger;
             _httpClient = httpClientFactory.CreateClient("GoogleMapsClient");  // Get a managed HttpClient instance
         }
+
 
         /// <summary>
         /// Calculates a route between two geographic coordinates using the Google Maps Directions API

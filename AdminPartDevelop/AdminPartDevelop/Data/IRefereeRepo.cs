@@ -1,8 +1,8 @@
-﻿using AdminPart.Common;
-using AdminPart.DTOs;
-using AdminPart.Models;
+﻿using AdminPartDevelop.Common;
+using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Models;
 
-namespace AdminPart.Data
+namespace AdminPartDevelop.Data
 {
     /// <summary>
     /// Interface for managing referee data from referee-database in the repository.
