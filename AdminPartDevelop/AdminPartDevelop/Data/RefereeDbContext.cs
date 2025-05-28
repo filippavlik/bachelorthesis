@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdminPart.Models;
+namespace AdminPartDevelop.Models;
 
 public partial class RefereeDbContext : DbContext
 {

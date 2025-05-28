@@ -1,11 +1,11 @@
-﻿using AdminPart.Common;
-using AdminPart.DTOs;
-using AdminPart.Models;
-using AdminPart.Views.ViewModels;
+﻿using AdminPartDevelop.Common;
+using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Views.ViewModels;
 using Aspose.Cells;
 using Microsoft.Maui.Storage;
 
-namespace AdminPart.Services.FileParsers
+namespace AdminPartDevelop.Services.FileParsers
 {
     public interface IExcelExporter
     {

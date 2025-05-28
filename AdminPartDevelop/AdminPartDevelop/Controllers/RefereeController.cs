@@ -1,8 +1,8 @@
-﻿using AdminPart.Hubs;
-using AdminPart.Models;
-using AdminPart.DTOs;
-using AdminPart.Services.FileParsers;
-using AdminPart.Views.ViewModels;
+﻿using AdminPartDevelop.Hubs;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Services.FileParsers;
+using AdminPartDevelop.Views.ViewModels;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -13,20 +13,22 @@ using Microsoft.AspNet.SignalR.Messaging;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Maui.ApplicationModel.Communication;
 using Microsoft.AspNet.SignalR;
-using AdminPart.Services.RouteServices;
+using AdminPartDevelop.Services.RouteServices;
+using AdminPartDevelop.Services.AdminServices;
+using System.ComponentModel.DataAnnotations;
 
-namespace AdminPart.Controllers
+namespace AdminPartDevelop.Controllers
 {
     [Route("Admin/Referee")]
     public class RefereeController : Controller
     {
         private readonly ILogger<RefereeController> _logger;
         private readonly Services.FileParsers.IExcelParser _excelParser;
-        private readonly Services.EmailsSender.EmailsToLoginDbSender _emailSender;
+        private readonly Services.EmailsSender.IEmailsToLoginDbSender _emailSender;
         private readonly Services.RefereeServices.IRefereeService _refereeService;
-        private readonly Services.AdminServices.IAdminService _adminService;
-        private readonly Services.RouteServices.RouteByBusPlanner _routeBusPlanner;
-        private readonly Services.RouteServices.RouteByCarPlanner _routeCarPlanner;
+        private readonly IAdminService _adminService;
+        private readonly Services.RouteServices.IRouteBusPlanner _routeBusPlanner;
+        private readonly Services.RouteServices.IRouteCarPlanner _routeCarPlanner;
 
 
         private readonly Microsoft.AspNetCore.SignalR.IHubContext<HubForReendering> _hubContext;
@@ -36,9 +38,9 @@ namespace AdminPart.Controllers
 
         private readonly Data.IRefereeRepo _refereeRepo;
         private readonly Data.IAdminRepo _adminRepo;
-        public RefereeController(Data.IRefereeRepo refereeRepo, Data.IAdminRepo adminRepo, Services.RouteServices.RouteByCarPlanner routeCarPlanner, Services.RouteServices.RouteByBusPlanner routeBusPlanner,
-            Services.FileParsers.IExcelParser excelParser, Services.EmailsSender.EmailsToLoginDbSender emailSender,
-            Services.RefereeServices.IRefereeService refereeService, Services.AdminServices.IAdminService adminService,
+        public RefereeController(Data.IRefereeRepo refereeRepo, Data.IAdminRepo adminRepo, Services.RouteServices.IRouteCarPlanner routeCarPlanner, Services.RouteServices.IRouteBusPlanner routeBusPlanner,
+            Services.FileParsers.IExcelParser excelParser, Services.EmailsSender.IEmailsToLoginDbSender emailSender,
+            Services.RefereeServices.IRefereeService refereeService, IAdminService adminService,
             Microsoft.AspNetCore.SignalR.IHubContext<HubForReendering> hubContext, IMemoryCache memoryCache, ILogger<RefereeController> logger)
         {
             _logger = logger;
@@ -62,6 +64,15 @@ namespace AdminPart.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            var validationResults = new List<ValidationResult>();
+            var context = new ValidationContext(request, serviceProvider: null, items: null);
+
+            if (!Validator.TryValidateObject(request, context, validationResults, validateAllProperties: true))
+            {
+                return BadRequest(validationResults);
+            }
+
 
             try
             {

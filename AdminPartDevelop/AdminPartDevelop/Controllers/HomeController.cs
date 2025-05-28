@@ -1,29 +1,29 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using AdminPart.Models;
-using AdminPart.Common;
-using AdminPart.Services.RefereeServices;
-using AdminPart.Views.ViewModels;
-using AdminPart.Services.AdminServices;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Common;
+using AdminPartDevelop.Services.RefereeServices;
+using AdminPartDevelop.Views.ViewModels;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Azure;
 using Microsoft.Extensions.Caching.Memory;
+using AdminPartDevelop.Services.AdminServices;
 
-namespace AdminPart.Controllers;
+namespace AdminPartDevelop.Controllers;
 [Route("Admin")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly Services.FileParsers.IExcelParser _excelParser;
     private readonly Services.RefereeServices.IRefereeService _refereeService;
-    private readonly Services.AdminServices.IAdminService _adminService;
+    private readonly IAdminService _adminService;
 
 
     private readonly Data.IRefereeRepo _refereeRepo;
     private readonly Data.IAdminRepo _adminRepo;
 
 
-    public HomeController(Data.IRefereeRepo refereeRepo, Data.IAdminRepo adminRepo, Services.FileParsers.IExcelParser excelParser, Services.RefereeServices.IRefereeService refereeService, Services.AdminServices.IAdminService adminService, ILogger<HomeController> logger)
+    public HomeController(Data.IRefereeRepo refereeRepo, Data.IAdminRepo adminRepo, Services.FileParsers.IExcelParser excelParser, Services.RefereeServices.IRefereeService refereeService, IAdminService adminService, ILogger<HomeController> logger)
     {
         _logger = logger;
         _excelParser = excelParser;

@@ -1,6 +1,6 @@
-﻿using AdminPart.Models;
+﻿using AdminPartDevelop.Models;
 
-namespace AdminPart.Views.ViewModels
+namespace AdminPartDevelop.Views.ViewModels
 {
     public class MatchViewModel
     {

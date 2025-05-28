@@ -1,11 +1,11 @@
-﻿using AdminPart.Common;
-using AdminPart.DTOs;
-using AdminPart.Models;
-using AdminPart.Views.ViewModels;
+﻿using AdminPartDevelop.Common;
+using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Views.ViewModels;
 using Azure.Core;
 using Microsoft.Extensions.Primitives;
 
-namespace AdminPart.Services.RefereeServices
+namespace AdminPartDevelop.Services.RefereeServices
 {
     public interface IRefereeService
     {

@@ -1,10 +1,10 @@
-﻿using AdminPart.Common;
-using AdminPart.DTOs;
-using AdminPart.Views.ViewModels;
+﻿using AdminPartDevelop.Common;
+using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Views.ViewModels;
 using Aspose.Cells;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace AdminPart.Services.FileParsers
+namespace AdminPartDevelop.Services.FileParsers
 {
     public class ExportData : IExcelExporter
     {
@@ -48,8 +48,8 @@ namespace AdminPart.Services.FileParsers
 
                     {
                     m.Match.MatchId,
-                    m.Match.HomeTeamId+" - "+m.HomeTeamName,
-                    m.Match.AwayTeamId+" - "+m.AwayTeamName,
+                    m.Match.HomeTeamId+" - "+m.HomeTeamName.Trim(),
+                    m.Match.AwayTeamId+" - "+m.AwayTeamName.Trim(),
                     m.Match.MatchDate.ToString("dd.MM.yyyy") + " " + m.Match.MatchTime.ToString("HH:mm"),
                     tupleReferee != null
                     ? tupleReferee.Item1 + (string.IsNullOrEmpty(tupleReferee.Item2) ? " ()" : $" ({tupleReferee.Item2})")
@@ -67,7 +67,7 @@ namespace AdminPart.Services.FileParsers
                     "",
                     "",
                     "",
-                    m.FieldName,
+                    m.FieldName.Trim(),
                     m.CompetitionName,
                     m.Match.AlreadyPlayed,
                     m.Match.Locked,

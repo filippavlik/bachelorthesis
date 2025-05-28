@@ -1,12 +1,12 @@
-﻿using AdminPart.DTOs;
-using AdminPart.Models;
-using AdminPart.Common;
+﻿using AdminPartDevelop.DTOs;
+using AdminPartDevelop.Models;
+using AdminPartDevelop.Common;
 using Microsoft.EntityFrameworkCore;
-using AdminPart.Services.FileParsers;
+using AdminPartDevelop.Services.FileParsers;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Internal;
 
-namespace AdminPart.Data
+namespace AdminPartDevelop.Data
 {
     public class RefereeRepo : IRefereeRepo
     {
@@ -38,7 +38,6 @@ namespace AdminPart.Data
                 {
                     _context.Referees.Add(referee);
                     await _context.SaveChangesAsync();
-
                     return new RepositoryResponse
                     {
                         Success = true,
